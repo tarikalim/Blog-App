@@ -32,7 +32,7 @@ class UserRegistration(Resource):
 
 @auth_ns.route('/login')
 class UserLogin(Resource):
-    @auth_ns.expect(user_registration_model, validate=True)
+    @auth_ns.expect(user_login_model, validate=True)
     def post(self):
         data = auth_ns.payload
         token = AuthService.login_user(username=data['username'], password=data['password'])
