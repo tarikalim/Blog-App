@@ -1,6 +1,7 @@
 from datetime import datetime
 from extensions import db
 
+
 # Define the Category model first as it does not have any foreign keys.
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -9,6 +10,7 @@ class Category(db.Model):
     description = db.Column(db.Text)
     # Relationship to Post
     posts = db.relationship('Post', backref='category')
+
 
 # Define the User model next as it has relationships but no foreign keys.
 class User(db.Model):
@@ -24,6 +26,7 @@ class User(db.Model):
     favorites = db.relationship('Favorite', backref='user')
     comments = db.relationship('Comment', backref='user')
 
+
 # The Post model is defined after User and Category because it contains foreign keys to both.
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -38,6 +41,7 @@ class Post(db.Model):
     favorites = db.relationship('Favorite', backref='post')
     comments = db.relationship('Comment', backref='post')
 
+
 # Define the Like model which references the User and Post models.
 class Like(db.Model):
     __tablename__ = 'likes'
@@ -45,12 +49,14 @@ class Like(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
 
+
 # Define the Favorite model which also references the User and Post models.
 class Favorite(db.Model):
     __tablename__ = 'favorites'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+
 
 # Lastly, define the Comment model which references the User and Post models.
 class Comment(db.Model):
