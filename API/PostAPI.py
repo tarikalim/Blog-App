@@ -6,18 +6,45 @@ from Service.PostService import PostService
 post_ns = Namespace('post', description='Post operations')
 
 post_model = post_ns.model('Post', {
-    'id': fields.Integer(required=True, description='Post ID'),
     'user_id': fields.Integer(required=True, description='User ID'),
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
     'publish_date': fields.DateTime(description='Publish Date'),
     'category_id': fields.Integer(required=True, description='Category ID'),
 })
+create_post_model = post_ns.model('CreatePost', {
+    'title': fields.String(required=True, description='Title'),
+    'content': fields.String(required=True, description='Content'),
+    'category_id': fields.Integer(required=True, description='Category ID'),
+})
+update_post_model = post_ns.model('UpdatePost', {
+    'title': fields.String(required=True, description='Title'),
+    'content': fields.String(required=True, description='Content'),
+    'category_id': fields.Integer(required=True, description='Category ID'),
+})
 
 
+# posts related operations
+@post_ns.route('')
+class PostsResource(Resource):
+    # create a post
+    @jwt_required()
+    @post_ns.expect(create_post_model, validate=True)
+    @post_ns.marshal_with(post_model)
+    @post_ns.doc(summary='Create a new post')
+    def post(self):
+        current_user_id = get_jwt_identity()
+        data = post_ns.payload
+        post = PostService.create_post(user_id=current_user_id, title=data['title'], content=data['content'],
+                                       category_id=data['category_id'])
+        return post, 201
+
+
+# post specific operations
 @post_ns.route('/<int:post_id>')
 class PostResource(Resource):
     @post_ns.marshal_with(post_model)
+    @post_ns.doc(description='Get a post by its ID.')
     def get(self, post_id):
         post = PostService.get_post_by_id(post_id)
         if post is None:
@@ -25,8 +52,9 @@ class PostResource(Resource):
         return post
 
     @jwt_required()
-    @post_ns.expect(post_model, validate=True)
+    @post_ns.expect(update_post_model, validate=True)
     @post_ns.marshal_with(post_model)
+    @post_ns.doc(description='Update a post by ID')
     def put(self, post_id):
         current_user_id = get_jwt_identity()
         post = PostService.get_post_by_id(post_id)
@@ -40,6 +68,7 @@ class PostResource(Resource):
         return updated_post
 
     @jwt_required()
+    @post_ns.doc(description='Delete a post by ID')
     def delete(self, post_id):
         current_user_id = get_jwt_identity()
         post = PostService.get_post_by_id(post_id)
@@ -50,13 +79,3 @@ class PostResource(Resource):
 
         PostService.delete_post(post_id)
         return {'message': 'Post deleted successfully.'}, 200
-
-
-@post_ns.route('/user/<int:user_id>')
-class UserPosts(Resource):
-    @post_ns.marshal_list_with(post_model)
-    def get(self, user_id):
-        posts = PostService.get_user_posts(user_id)
-        if not posts:
-            return {'message': 'No posts found for this user.'}, 404
-        return posts
