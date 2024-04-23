@@ -8,4 +8,12 @@ mail = Mail()
 db = SQLAlchemy()
 jwt = JWTManager()
 migrate = Migrate()
-api = Api(version='1.0', title='Blog API', description='Blog API for Flask app')
+api = Api(version='1.0', title='Blog API', description='Blog API for Flask app',
+          authorizations={
+              'Bearer Auth': {
+                  'type': 'apiKey',
+                  'in': 'header',
+                  'name': 'Authorization'
+              },
+          },
+          security='Bearer Auth', )
