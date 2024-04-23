@@ -1,6 +1,5 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields
-from Service.UserService import UserService
+from flask_restx import Resource, Namespace, fields, reqparse
 from Service.PostService import PostService
 
 post_ns = Namespace('post', description='Post operations')
@@ -22,11 +21,29 @@ update_post_model = post_ns.model('UpdatePost', {
     'content': fields.String(required=True, description='Content'),
     'category_id': fields.Integer(required=True, description='Category ID'),
 })
+find_post_model = post_ns.model('FindPost', {
+    'title': fields.String(description='Title to filter posts'),
+    'content': fields.String(description='Content to filter posts')
+})
 
 
 # posts related operations
 @post_ns.route('')
 class PostsResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('title', type=str, help='Title to filter posts')
+
+    # get all posts or filter by title
+    @post_ns.expect(parser)
+    @post_ns.marshal_list_with(find_post_model)
+    def get(self):
+        title = self.parser.parse_args().get('title')
+        if title:
+            posts = PostService.get_posts_by_title(title)
+        else:
+            posts = PostService.get_all_posts()
+        return posts
+
     # create a post
     @jwt_required()
     @post_ns.expect(create_post_model, validate=True)
@@ -43,6 +60,7 @@ class PostsResource(Resource):
 # post specific operations
 @post_ns.route('/<int:post_id>')
 class PostResource(Resource):
+    # get a post by ID
     @post_ns.marshal_with(post_model)
     @post_ns.doc(description='Get a post by its ID.')
     def get(self, post_id):
@@ -51,6 +69,7 @@ class PostResource(Resource):
             return {'message': 'Post not found.'}, 404
         return post
 
+    # update a post by ID
     @jwt_required()
     @post_ns.expect(update_post_model, validate=True)
     @post_ns.marshal_with(post_model)
@@ -67,6 +86,7 @@ class PostResource(Resource):
         updated_post = PostService.update_post(post_id, title=data['title'], content=data['content'])
         return updated_post
 
+    # delete a post by ID
     @jwt_required()
     @post_ns.doc(description='Delete a post by ID')
     def delete(self, post_id):

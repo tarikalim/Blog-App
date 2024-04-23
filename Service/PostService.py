@@ -1,4 +1,4 @@
-from model.model import db, Post, User, Category
+from Model.model import db, Post, User, Category
 
 
 class PostService:
@@ -42,3 +42,7 @@ class PostService:
     @staticmethod
     def get_user_posts(user_id):
         return Post.query.filter_by(user_id=user_id).all()
+
+    @staticmethod
+    def get_posts_by_title(title):
+        return Post.query.filter(Post.title.like(f'%{title}%')).all()

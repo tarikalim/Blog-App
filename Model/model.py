@@ -2,7 +2,7 @@ from datetime import datetime
 from extensions import db
 
 
-# Define the Category model first as it does not have any foreign keys.
+# Define the Category Model first as it does not have any foreign keys.
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
@@ -12,7 +12,7 @@ class Category(db.Model):
     posts = db.relationship('Post', backref='category')
 
 
-# Define the User model next as it has relationships but no foreign keys.
+# Define the User Model next as it has relationships but no foreign keys.
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +27,7 @@ class User(db.Model):
     comments = db.relationship('Comment', backref='user')
 
 
-# The Post model is defined after User and Category because it contains foreign keys to both.
+# The Post Model is defined after User and Category because it contains foreign keys to both.
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +42,7 @@ class Post(db.Model):
     comments = db.relationship('Comment', backref='post')
 
 
-# Define the Like model which references the User and Post models.
+# Define the Like Model which references the User and Post models.
 class Like(db.Model):
     __tablename__ = 'likes'
     id = db.Column(db.Integer, primary_key=True)
@@ -50,7 +50,7 @@ class Like(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
 
 
-# Define the Favorite model which also references the User and Post models.
+# Define the Favorite Model which also references the User and Post models.
 class Favorite(db.Model):
     __tablename__ = 'favorites'
     id = db.Column(db.Integer, primary_key=True)
@@ -58,7 +58,7 @@ class Favorite(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
 
 
-# Lastly, define the Comment model which references the User and Post models.
+# Lastly, define the Comment Model which references the User and Post models.
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
