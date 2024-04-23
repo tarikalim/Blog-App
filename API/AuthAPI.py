@@ -15,8 +15,10 @@ user_login_model = auth_ns.model('UserLogin', {
 })
 
 
+# auth specific operations
 @auth_ns.route('/register')
 class UserRegistration(Resource):
+    # register a new user
     @auth_ns.expect(user_registration_model, validate=True)
     def post(self):
         data = auth_ns.payload
@@ -30,6 +32,7 @@ class UserRegistration(Resource):
             auth_ns.abort(409, 'User already exists.')
 
 
+# login user, return a JWT token
 @auth_ns.route('/login')
 class UserLogin(Resource):
     @auth_ns.expect(user_login_model, validate=True)
