@@ -22,17 +22,18 @@ class UserRegistration(Resource):
     @auth_ns.expect(user_registration_model, validate=True)
     def post(self):
         data = auth_ns.payload
-        user = AuthService.register_user(username=data['username'],
-                                         email=data['email'],
-                                         password=data['password']
-                                         )
-        if user:
+        result = AuthService.register_user(username=data['username'],
+                                           email=data['email'],
+                                           password=data['password']
+                                           )
+        if isinstance(result, User):
             return {'message': 'User created successfully.'}, 201
-        else:
+        elif result is None:
             auth_ns.abort(409, 'User already exists.')
+        else:
+            auth_ns.abort(400, result)
 
 
-# login user, return a JWT token
 @auth_ns.route('/login')
 class UserLogin(Resource):
     @auth_ns.expect(user_login_model, validate=True)
