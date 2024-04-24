@@ -18,7 +18,7 @@ update_user_model = user_ns.model('UpdateUser', {
 # user specific operations
 @user_ns.route('')
 class UserResource(Resource):
-    # get user by id
+    # get your info
     @jwt_required()
     @user_ns.marshal_with(user_model)
     def get(self):
@@ -42,3 +42,15 @@ class UserResource(Resource):
         current_user_id = get_jwt_identity()
         UserService.delete_user(current_user_id)
         return {'message': 'User deleted successfully.'}, 200
+
+
+@user_ns.route('/<int:user_id>')
+class UserResource(Resource):
+    # get a user by ID
+    @user_ns.marshal_with(user_model)
+    @user_ns.doc(description='Get a user by its ID.')
+    def get(self, user_id):
+        user = UserService.get_user_by_id(user_id)
+        if user is None:
+            return {'message': 'User not found.'}, 404
+        return user
