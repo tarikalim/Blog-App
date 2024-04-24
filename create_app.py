@@ -4,6 +4,7 @@ from flask import Flask
 from API.AuthAPI import auth_ns
 from API.UserAPI import user_ns
 from API.PostAPI import post_ns
+from API.CommentAPI import comment_ns
 
 
 def create_app():
@@ -13,6 +14,7 @@ def create_app():
     api.add_namespace(auth_ns, path='/auth')
     api.add_namespace(user_ns, path='/user')
     api.add_namespace(post_ns, path='/post')
+    api.add_namespace(comment_ns, path='/comment')
 
     mail.init_app(app)
     db.init_app(app)
