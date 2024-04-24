@@ -1,5 +1,5 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields
+from flask_restx import Resource, Namespace, fields, reqparse
 from Service.UserService import *
 
 user_ns = Namespace('user', description='User operations')
@@ -44,13 +44,20 @@ class UserResource(Resource):
         return {'message': 'User deleted successfully.'}, 200
 
 
-@user_ns.route('/<int:user_id>')
-class UserResource(Resource):
-    # get a user by ID
-    @user_ns.marshal_with(user_model)
-    @user_ns.doc(description='Get a user by its ID.')
-    def get(self, user_id):
-        user = UserService.get_user_by_id(user_id)
-        if user is None:
-            return {'message': 'User not found.'}, 404
-        return user
+parser = reqparse.RequestParser()
+parser.add_argument('username', type=str, required=False, help='Username to filter users')
+
+
+@user_ns.route('/search')
+class UserSearch(Resource):
+
+    @user_ns.expect(parser)
+    @user_ns.marshal_list_with(user_model)
+    def get(self):
+        args = parser.parse_args()
+        username = args.get('username')
+        if username:
+            users = UserService.get_users_by_username(username)
+        else:
+            users = UserService.get_all_users()
+        return users

@@ -7,8 +7,8 @@ class UserService:
         return User.query.get(user_id)
 
     @staticmethod
-    def get_user_by_username(username):
-        return User.query.filter_by(username=username).first()
+    def get_users_by_username(username):
+        return User.query.filter(User.username.like(f"%{username}%")).all()
 
     @staticmethod
     def get_all_users():

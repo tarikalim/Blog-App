@@ -23,26 +23,14 @@ update_post_model = post_ns.model('UpdatePost', {
 })
 find_post_model = post_ns.model('FindPost', {
     'title': fields.String(description='Title to filter posts'),
-    'content': fields.String(description='Content to filter posts')
+    'content': fields.String(description='Content to filter posts'),
+    'id': fields.Integer(description='Post ID'),
 })
 
 
 # posts related operations
 @post_ns.route('')
 class PostsResource(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('title', type=str, help='Title to filter posts')
-
-    # get all posts or filter by title
-    @post_ns.expect(parser)
-    @post_ns.marshal_list_with(find_post_model)
-    def get(self):
-        title = self.parser.parse_args().get('title')
-        if title:
-            posts = PostService.get_posts_by_title(title)
-        else:
-            posts = PostService.get_all_posts()
-        return posts
 
     # create a post
     @jwt_required()
@@ -99,3 +87,20 @@ class PostResource(Resource):
 
         PostService.delete_post(post_id)
         return {'message': 'Post deleted successfully.'}, 200
+
+
+@post_ns.route('/search')
+class PostsResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('title', type=str, help='Title to filter posts')
+
+    # get all posts or filter by title
+    @post_ns.expect(parser)
+    @post_ns.marshal_list_with(find_post_model)
+    def get(self):
+        title = self.parser.parse_args().get('title')
+        if title:
+            posts = PostService.get_posts_by_title(title)
+        else:
+            posts = PostService.get_all_posts()
+        return posts
