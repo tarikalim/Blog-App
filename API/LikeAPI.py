@@ -4,7 +4,7 @@ from flask_restx import Resource, Namespace, fields, abort
 from Service.LikeService import LikeService
 
 # Namespace
-like_ns = Namespace('likes', description='Handle likes on posts')
+like_ns = Namespace('like', description='Handle likes on posts')
 
 # Models
 like_model = like_ns.model('Like', {
