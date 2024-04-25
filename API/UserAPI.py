@@ -26,7 +26,7 @@ class UserResource(Resource):
         user = UserService.get_user_by_id(current_user_id)
         return user
 
-    # update user info
+    # update your info
     @jwt_required()
     @user_ns.expect(update_user_model, validate=True)
     @user_ns.marshal_with(user_model)
@@ -36,7 +36,7 @@ class UserResource(Resource):
         user = UserService.update_user(current_user_id, username=data['username'], email=data['email'])
         return user
 
-    # delete user account
+    # delete your account
     @jwt_required()
     def delete(self):
         current_user_id = get_jwt_identity()
@@ -50,7 +50,7 @@ parser.add_argument('username', type=str, required=False, help='Username to filt
 
 @user_ns.route('/search')
 class UserSearch(Resource):
-
+    # search users by username
     @user_ns.expect(parser)
     @user_ns.marshal_list_with(user_model)
     def get(self):

@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from Model.model import db, User
 from flask_jwt_extended import create_access_token
-from Helper.userValidation import validate_password, validate_email, validate_mx_record
+from Helper.userValidation import validate_password, validate_email
 
 
 class AuthService:
