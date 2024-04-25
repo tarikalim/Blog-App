@@ -1,0 +1,894 @@
+{
+  "swagger": "2.0",
+  "basePath": "/",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_user_login",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_user_registration",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserRegistration"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/category": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        },
+        "description": "Get all categories",
+        "operationId": "get_category_resource",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "category"
+        ]
+      }
+    },
+    "/category/{category_id}": {
+      "parameters": [
+        {
+          "name": "category_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Category%20Name"
+            }
+          }
+        },
+        "description": "Get category name by ID",
+        "operationId": "get_category_resource",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "category"
+        ]
+      }
+    },
+    "/comment": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        },
+        "description": "Create a new comment",
+        "operationId": "post_comments_resource",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateComment"
+            }
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "comment"
+        ]
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Comment"
+              }
+            }
+          }
+        },
+        "description": "Get all comments or filter by post_id",
+        "operationId": "get_comments_resource",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "query",
+            "type": "integer",
+            "description": "Post ID to filter comments"
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "comment"
+        ]
+      }
+    },
+    "/comment/{comment_id}": {
+      "parameters": [
+        {
+          "name": "comment_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        },
+        "description": "Update a comment",
+        "operationId": "put_comment_resource",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateComment"
+            }
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "comment"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "description": "Delete a comment",
+        "operationId": "delete_comment_resource",
+        "tags": [
+          "comment"
+        ]
+      }
+    },
+    "/like/{post_id}": {
+      "parameters": [
+        {
+          "name": "post_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Like"
+            }
+          }
+        },
+        "operationId": "post_like_resource",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "like"
+        ]
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LikeCount"
+            }
+          }
+        },
+        "operationId": "get_like_resource",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "like"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "delete_like_resource",
+        "tags": [
+          "like"
+        ]
+      }
+    },
+    "/post": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "operationId": "post_posts_resource",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreatePost"
+            }
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "post"
+        ]
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FindPost"
+              }
+            }
+          }
+        },
+        "operationId": "get_posts_resource",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "type": "string",
+            "description": "Title to filter posts"
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "post"
+        ]
+      }
+    },
+    "/post/{post_id}": {
+      "parameters": [
+        {
+          "name": "post_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "description": "Update a post by ID",
+        "operationId": "put_post_resource",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdatePost"
+            }
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "post"
+        ]
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "description": "Get a post by its ID.",
+        "operationId": "get_post_resource",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "post"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "description": "Delete a post by ID",
+        "operationId": "delete_post_resource",
+        "tags": [
+          "post"
+        ]
+      }
+    },
+    "/user": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "operationId": "put_user_resource",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "operationId": "get_user_resource",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "delete_user_resource",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/search": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "operationId": "get_user_search",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "type": "string",
+            "description": "Username to filter users"
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Blog API",
+    "version": "1.0",
+    "description": "Blog API for Flask app"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Bearer Auth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "security": [
+    {
+      "Bearer Auth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication  operations"
+    },
+    {
+      "name": "user",
+      "description": "User operations"
+    },
+    {
+      "name": "post",
+      "description": "Post operations"
+    },
+    {
+      "name": "comment",
+      "description": "Comment operations"
+    },
+    {
+      "name": "like",
+      "description": "Handle likes on posts"
+    },
+    {
+      "name": "category",
+      "description": "Category operations"
+    }
+  ],
+  "definitions": {
+    "UserRegistration": {
+      "required": [
+        "email",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password"
+        }
+      },
+      "type": "object"
+    },
+    "UserLogin": {
+      "required": [
+        "password",
+        "username"
+      ],
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password"
+        }
+      },
+      "type": "object"
+    },
+    "UpdateUser": {
+      "required": [
+        "email",
+        "username"
+      ],
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email"
+        }
+      },
+      "type": "object"
+    },
+    "User": {
+      "required": [
+        "email",
+        "username"
+      ],
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email"
+        },
+        "join_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Join Date"
+        }
+      },
+      "type": "object"
+    },
+    "CreatePost": {
+      "required": [
+        "category_id",
+        "content",
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content"
+        },
+        "category_id": {
+          "type": "integer",
+          "description": "Category ID"
+        }
+      },
+      "type": "object"
+    },
+    "Post": {
+      "required": [
+        "category_id",
+        "content",
+        "title",
+        "user_id"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "description": "User ID"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content"
+        },
+        "publish_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Publish Date"
+        },
+        "category_id": {
+          "type": "integer",
+          "description": "Category ID"
+        }
+      },
+      "type": "object"
+    },
+    "FindPost": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title to filter posts"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content to filter posts"
+        },
+        "id": {
+          "type": "integer",
+          "description": "Post ID"
+        },
+        "category_id": {
+          "type": "integer",
+          "description": "Category ID"
+        }
+      },
+      "type": "object"
+    },
+    "UpdatePost": {
+      "required": [
+        "category_id",
+        "content",
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content"
+        },
+        "category_id": {
+          "type": "integer",
+          "description": "Category ID"
+        }
+      },
+      "type": "object"
+    },
+    "CreateComment": {
+      "required": [
+        "content",
+        "post_id"
+      ],
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "description": "Post ID"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content"
+        }
+      },
+      "type": "object"
+    },
+    "Comment": {
+      "required": [
+        "content",
+        "post_id",
+        "user_id"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "description": "User ID"
+        },
+        "post_id": {
+          "type": "integer",
+          "description": "Post ID"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content"
+        },
+        "comment_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Comment Date"
+        }
+      },
+      "type": "object"
+    },
+    "UpdateComment": {
+      "required": [
+        "content"
+      ],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Content"
+        }
+      },
+      "type": "object"
+    },
+    "Like": {
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "description": "User ID of the liker"
+        },
+        "post_id": {
+          "type": "integer",
+          "description": "Post ID"
+        }
+      },
+      "type": "object"
+    },
+    "LikeCount": {
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "description": "Post ID"
+        },
+        "like_count": {
+          "type": "integer",
+          "description": "Total number of likes"
+        }
+      },
+      "type": "object"
+    },
+    "Category": {
+      "required": [
+        "description",
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Category ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Category Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Category Description"
+        }
+      },
+      "type": "object"
+    },
+    "Category Name": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Category Name"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "responses": {
+    "ParseError": {
+      "description": "When a mask can't be parsed"
+    },
+    "MaskError": {
+      "description": "When any error occurs on mask"
+    }
+  }
+}
