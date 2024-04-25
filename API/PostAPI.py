@@ -25,6 +25,7 @@ find_post_model = post_ns.model('FindPost', {
     'title': fields.String(description='Title to filter posts'),
     'content': fields.String(description='Content to filter posts'),
     'id': fields.Integer(description='Post ID'),
+    'category_id': fields.Integer(description='Category ID'),
 })
 
 
