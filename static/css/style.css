@@ -1,0 +1,65 @@
+/* Buton stilleri */
+button {
+    background-color: #03a87c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #02735a;
+}
+
+/* Form stilleri */
+form {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border: 1px solid #03a87c;
+}
+
+/* Container stilleri */
+#authContainer {
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #03a87c;
+}
+
+.button-container button {
+    width: 200px; /* Buton genişliği */
+    height: 50px; /* Buton yüksekliği */
+    font-size: 20px; /* Yazı boyutu */
+}
+
+.button-container {
+    gap: 20px; /* Butonlar arası boşluk */
+}
