@@ -4,7 +4,20 @@ from Model.model import db, Post, User, Category
 class PostService:
     @staticmethod
     def get_post_by_id(post_id):
-        return Post.query.get(post_id)
+        result = db.session.query(Post, Category.name).join(Category).filter(Post.id == post_id).first()
+        if result:
+            post, category_name = result
+            post_data = {
+                'id': post.id,
+                'user_id': post.user_id,
+                'title': post.title,
+                'content': post.content,
+                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),  # RFC822 format
+                'category_id': post.category_id,
+                'category_name': category_name
+            }
+            return post_data
+        return None
 
     @staticmethod
     def get_all_posts():
