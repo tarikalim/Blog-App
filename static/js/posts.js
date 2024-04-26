@@ -1,6 +1,7 @@
-document.getElementById('createPostButton').addEventListener('click', function () {
-    window.location.href = '/create-post.html';
+document.getElementById('profileButton').addEventListener('click', function () {
+    window.location.href = 'profile.html';
 });
+
 
 document.getElementById('searchButton').addEventListener('click', function () {
     var searchQuery = document.getElementById('searchInput').value;

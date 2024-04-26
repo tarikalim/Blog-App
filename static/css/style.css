@@ -54,12 +54,35 @@ h1 {
     color: #03a87c;
 }
 
-.button-container button {
-    width: 200px; /* Buton genişliği */
-    height: 50px; /* Buton yüksekliği */
-    font-size: 20px; /* Yazı boyutu */
+/* Kullanıcı profil stilleri */
+#userProfile {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-.button-container {
-    gap: 20px; /* Butonlar arası boşluk */
+#profileDetails {
+    margin-bottom: 20px;
+}
+
+#userPosts {
+    margin-top: 20px;
+}
+
+.postContainer {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.postContainer h3 {
+    margin-top: 0;
+}
+
+#updateProfileForm {
+    margin-top: 20px;
 }
