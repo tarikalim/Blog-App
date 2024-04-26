@@ -8,8 +8,9 @@ post_model = post_ns.model('Post', {
     'user_id': fields.Integer(required=True, description='User ID'),
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
-    'publish_date': fields.DateTime(description='Publish Date'),
+    'publish_date': fields.DateTime(description='Publish Date of the post', dt_format='rfc822'),
     'category_id': fields.Integer(required=True, description='Category ID'),
+    'category_name': fields.String(description='Category Name'),
 })
 create_post_model = post_ns.model('CreatePost', {
     'title': fields.String(required=True, description='Title'),
@@ -82,7 +83,7 @@ class PostResource(Resource):
         post = PostService.get_post_by_id(post_id)
         if post is None:
             return {'message': 'Post not found.'}, 404
-        if post.user_id != current_user_id:
+        if post['user_id'] != current_user_id:
             return {'message': 'You can only update your own posts.'}, 403
 
         data = post_ns.payload
@@ -97,7 +98,7 @@ class PostResource(Resource):
         post = PostService.get_post_by_id(post_id)
         if post is None:
             return {'message': 'Post not found.'}, 404
-        if post.user_id != current_user_id:
+        if post['user_id'] != current_user_id:
             return {'message': 'You can only delete your own posts.'}, 403
 
         PostService.delete_post(post_id)
