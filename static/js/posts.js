@@ -1,18 +1,3 @@
-document.getElementById('profileButton').addEventListener('click', function () {
-    var token = localStorage.getItem('token');
-    fetch('/user', {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            alert(JSON.stringify(data));
-        })
-        .catch(error => console.error('Error:', error));
-});
-
 document.getElementById('createPostButton').addEventListener('click', function () {
     window.location.href = '/create-post.html';
 });
