@@ -36,13 +36,6 @@ class UserResource(Resource):
         user = UserService.update_user(current_user_id, username=data['username'], email=data['email'])
         return user
 
-    # delete your account
-    @jwt_required()
-    def delete(self):
-        current_user_id = get_jwt_identity()
-        UserService.delete_user(current_user_id)
-        return {'message': 'User deleted successfully.'}, 200
-
 
 parser = reqparse.RequestParser()
 parser.add_argument('username', type=str, required=False, help='Username to filter users')

@@ -59,3 +59,5 @@ class PostService:
     @staticmethod
     def get_posts_by_title(title):
         return Post.query.filter(Post.title.like(f'%{title}%')).all()
+
+

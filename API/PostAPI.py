@@ -27,10 +27,29 @@ find_post_model = post_ns.model('FindPost', {
     'content': fields.String(description='Content to filter posts'),
     'id': fields.Integer(description='Post ID'),
     'category_id': fields.Integer(description='Category ID'),
+    'user_id': fields.Integer(description='User ID'),
 })
 
 
 # posts related operations
+
+@post_ns.route('/user')
+class UserPostsResource(Resource):
+
+    @jwt_required()
+    @post_ns.marshal_list_with(find_post_model)
+    @post_ns.doc(description='Get all posts of current user.')
+    def get(self):
+        user_id = get_jwt_identity()
+        try:
+            posts = PostService.get_user_posts(user_id)
+            if not posts:
+                post_ns.abort(404, "No posts found for the user.")
+            return posts
+        except Exception as e:
+            post_ns.abort(500, f"An error occurred: {str(e)}")
+
+
 @post_ns.route('')
 class PostsResource(Resource):
     parser = reqparse.RequestParser()

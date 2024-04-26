@@ -23,9 +23,3 @@ class UserService:
             user.email = email
         db.session.commit()
         return user
-
-    @staticmethod
-    def delete_user(user_id):
-        user = User.query.get(user_id)
-        db.session.delete(user)
-        db.session.commit()
