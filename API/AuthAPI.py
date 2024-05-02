@@ -13,6 +13,12 @@ user_login_model = auth_ns.model('UserLogin', {
     'username': fields.String(required=True, description='Username'),
     'password': fields.String(required=True, description='Password')
 })
+reset_password_model = auth_ns.model('UserResetPassword', {
+    'email': fields.String(required=True, description='Email')
+})
+update_password_model = auth_ns.model('UserUpdatePassword', {
+    'new_password': fields.String(required=True, description='New Password')
+})
 
 
 # auth specific operations
@@ -44,3 +50,23 @@ class UserLogin(Resource):
             return {'token': token}, 200
         else:
             auth_ns.abort(401, 'Invalid credentials')
+
+
+@auth_ns.route('/change-password-request')
+class ChangePasswordRequest(Resource):
+    @auth_ns.expect(reset_password_model, validate=True)
+    def post(self):
+        data = auth_ns.payload
+        email = data['email']
+        response = AuthService.reset_password_request(email)
+        return {'message': response}, 200 if "Success" in response else 400
+
+
+@auth_ns.route('/reset-password/<token>')
+class ResetPassword(Resource):
+    @auth_ns.expect(update_password_model, validate=True)
+    def post(self, token):
+        data = auth_ns.payload
+        new_password = data['new_password']
+        response = AuthService.change_password(token, new_password)
+        return {'message': response}, 200 if "Success" in response else 400
