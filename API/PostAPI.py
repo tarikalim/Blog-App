@@ -22,13 +22,6 @@ update_post_model = post_ns.model('UpdatePost', {
     'content': fields.String(required=True, description='Content'),
     'category_id': fields.Integer(required=True, description='Category ID'),
 })
-find_post_model = post_ns.model('FindPost', {
-    'title': fields.String(description='Title to filter posts'),
-    'content': fields.String(description='Content to filter posts'),
-    'id': fields.Integer(description='Post ID'),
-    'category_id': fields.Integer(description='Category ID'),
-    'user_id': fields.Integer(description='User ID'),
-})
 
 
 # posts related operations
@@ -37,7 +30,7 @@ find_post_model = post_ns.model('FindPost', {
 class UserPostsResource(Resource):
 
     @jwt_required()
-    @post_ns.marshal_list_with(find_post_model)
+    @post_ns.marshal_list_with(post_model)
     @post_ns.doc(description='Get all posts of current user.')
     def get(self):
         user_id = get_jwt_identity()
@@ -57,7 +50,7 @@ class PostsResource(Resource):
 
     # get all posts or filter by title
     @post_ns.expect(parser)
-    @post_ns.marshal_list_with(find_post_model)
+    @post_ns.marshal_list_with(post_model)
     def get(self):
         args = self.parser.parse_args()
         title = args['title']
@@ -122,3 +115,32 @@ class PostResource(Resource):
 
         PostService.delete_post(post_id)
         return {'message': 'Post deleted successfully.'}, 200
+
+
+@post_ns.route('/category/<int:category_id>')
+class CategoryPostsResource(Resource):
+    @post_ns.marshal_list_with(post_model)
+    @post_ns.doc(description='Get all posts of a category.')
+    def get(self, category_id):
+        posts = PostService.get_posts_by_category(category_id)
+        if not posts:
+            post_ns.abort(404, "No posts found for the category.")
+        return posts
+
+
+@post_ns.route('')
+class PostsResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('title', type=str, help='Title to filter posts', location='args')
+
+    # get all posts or filter by title
+    @post_ns.expect(parser)
+    @post_ns.marshal_list_with(post_model)
+    def get(self):
+        args = self.parser.parse_args()
+        title = args['title']
+        if title:
+            posts = PostService.get_posts_by_title(title)
+        else:
+            posts = PostService.get_all_posts()
+        return posts

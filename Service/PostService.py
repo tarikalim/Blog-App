@@ -1,7 +1,41 @@
-from Model.model import db, Post, User, Category
+from Model.model import db, Post, Category
 
 
 class PostService:
+    @staticmethod
+    def get_all_posts():
+        results = db.session.query(Post, Category.name).join(Category).all()
+        posts_data = []
+        for post, category_name in results:
+            post_data = {
+                'id': post.id,
+                'user_id': post.user_id,
+                'title': post.title,
+                'content': post.content,
+                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),  # RFC822 format
+                'category_id': post.category_id,
+                'category_name': category_name
+            }
+            posts_data.append(post_data)
+        return posts_data if posts_data else None
+
+    @staticmethod
+    def get_user_posts(user_id):
+        results = db.session.query(Post, Category.name).join(Category).filter(Post.user_id == user_id).all()
+        posts_data = []
+        for post, category_name in results:
+            post_data = {
+                'id': post.id,
+                'user_id': post.user_id,
+                'title': post.title,
+                'content': post.content,
+                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),  # RFC822 format
+                'category_id': post.category_id,
+                'category_name': category_name
+            }
+            posts_data.append(post_data)
+        return posts_data if posts_data else None
+
     @staticmethod
     def get_post_by_id(post_id):
         result = db.session.query(Post, Category.name).join(Category).filter(Post.id == post_id).first()
@@ -20,8 +54,40 @@ class PostService:
         return None
 
     @staticmethod
-    def get_all_posts():
-        return Post.query.all()
+    def get_posts_by_title(title):
+        results = db.session.query(Post, Category.name).join(Category, Post.category_id == Category.id).filter(
+            Post.title.like(f'%{title}%')).all()
+        posts_data = []
+        for post, category_name in results:
+            post_data = {
+                'id': post.id,
+                'user_id': post.user_id,
+                'title': post.title,
+                'content': post.content,
+                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),
+                'category_id': post.category_id,
+                'category_name': category_name
+            }
+            posts_data.append(post_data)
+        return posts_data if posts_data else None
+
+    @staticmethod
+    def get_posts_by_category(category_id):
+        results = db.session.query(Post, Category.name).join(Category, Post.category_id == Category.id).filter(
+            Post.category_id == category_id).all()
+        posts_data = []
+        for post, category_name in results:
+            post_data = {
+                'id': post.id,
+                'user_id': post.user_id,
+                'title': post.title,
+                'content': post.content,
+                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),
+                'category_id': post.category_id,
+                'category_name': category_name
+            }
+            posts_data.append(post_data)
+        return posts_data if posts_data else None
 
     @staticmethod
     def create_post(user_id, title, content, category_id):
@@ -51,13 +117,3 @@ class PostService:
         db.session.delete(post)
         db.session.commit()
         return post
-
-    @staticmethod
-    def get_user_posts(user_id):
-        return Post.query.filter_by(user_id=user_id).all()
-
-    @staticmethod
-    def get_posts_by_title(title):
-        return Post.query.filter(Post.title.like(f'%{title}%')).all()
-
-
