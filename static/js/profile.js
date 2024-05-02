@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('token');
     if (!token) {
-        console.error('Token bulunamadı, kullanıcı giriş yapmalı.');
+        console.error('Please Login to System.');
         return;
     }
 
@@ -18,7 +18,7 @@ function getUserProfile(token) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Profil bilgileri alınamadı.');
+                throw new Error('No Profile.');
             }
             return response.json();
         })

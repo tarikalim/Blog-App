@@ -6,19 +6,24 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <button id="profileButton">Profile</button>
-        <button id="createPostButton">Create a New Post</button>
-        <input type="text" id="searchInput" placeholder="Search a post...">
-        <button id="searchButton">Ara</button>
-    </header>
+<header>
+    <button id="profileButton">Profile</button>
+    <button id="createPostButton">Create a New Post</button>
+    <input type="text" id="searchInput" placeholder="Search a post...">
+    <button id="searchButton">Search</button>
 
-    <main id="mainContent">
-        <h1>Last Blogs</h1>
-        <div id="posts">
-        </div>
-    </main>
 
-    <script src="js/posts.js"></script>
+    <select id="categorySelect">
+        <option value="">All Categories</option>
+    </select>
+</header>
+
+<main id="mainContent">
+    <h1>Last Blogs</h1>
+    <div id="posts">
+    </div>
+</main>
+
+<script src="js/main.js"></script>
 </body>
 </html>

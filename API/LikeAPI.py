@@ -31,7 +31,7 @@ class LikeResource(Resource):
             return abort(409, 'Post already liked.')
         return new_like, 201
 
-    @jwt_required()
+    # Get the number of likes on a post
     @like_ns.marshal_with(like_count_model)
     def get(self, post_id):
         like_count = LikeService.get_post_likes(post_id)
