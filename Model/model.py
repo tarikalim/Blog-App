@@ -9,7 +9,7 @@ class Category(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     description = db.Column(db.Text)
     # Relationship to Post
-    posts = db.relationship('Post', backref='category')
+    posts = db.relationship('Post', backref='category', cascade="all, delete-orphan")
 
 
 # Define the User Model next as it has relationships but no foreign keys.
@@ -18,28 +18,26 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(300), nullable=False)
     join_date = db.Column(db.DateTime, default=datetime.utcnow)
-    # Relationships
-    posts = db.relationship('Post', backref='author')
-    likes = db.relationship('Like', backref='user')
-    favorites = db.relationship('Favorite', backref='user')
-    comments = db.relationship('Comment', backref='user')
+    posts = db.relationship('Post', backref='author', lazy='dynamic', cascade="all, delete-orphan")
+    likes = db.relationship('Like', backref='user', lazy='dynamic', cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', backref='user', lazy='dynamic', cascade="all, delete-orphan")
+    comments = db.relationship('Comment', backref='user', lazy='dynamic', cascade="all, delete-orphan")
 
 
 # The Post Model is defined after User and Category because it contains foreign keys to both.
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     publish_date = db.Column(db.DateTime, default=datetime.utcnow)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
-    # Relationships
-    likes = db.relationship('Like', backref='post')
-    favorites = db.relationship('Favorite', backref='post')
-    comments = db.relationship('Comment', backref='post')
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False)
+    likes = db.relationship('Like', backref='post', lazy='dynamic', cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', backref='post', lazy='dynamic', cascade="all, delete-orphan")
+    comments = db.relationship('Comment', backref='post', lazy='dynamic', cascade="all, delete-orphan")
 
 
 # Define the Like Model which references the User and Post models.
