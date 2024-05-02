@@ -1,5 +1,5 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields, reqparse
+from flask_restx import Resource, Namespace, fields, reqparse, abort
 from Service.UserService import *
 
 user_ns = Namespace('user', description='User operations')
@@ -18,6 +18,14 @@ update_user_model = user_ns.model('UpdateUser', {
 # user specific operations
 @user_ns.route('')
 class UserResource(Resource):
+    # delete your account
+    @user_ns.marshal_with(user_model)
+    @jwt_required()
+    def delete(self):
+        current_user_id = get_jwt_identity()
+        user = UserService.delete_user(current_user_id)
+        return user
+
     # get your info
     @jwt_required()
     @user_ns.marshal_with(user_model)
@@ -33,8 +41,11 @@ class UserResource(Resource):
     def put(self):
         current_user_id = get_jwt_identity()
         data = user_ns.payload
-        user = UserService.update_user(current_user_id, username=data['username'], email=data['email'])
-        return user
+        try:
+            user = UserService.update_user(current_user_id, username=data['username'], email=data['email'])
+            return user
+        except ValueError as e:
+            abort(400, str(e))
 
 
 parser = reqparse.RequestParser()
