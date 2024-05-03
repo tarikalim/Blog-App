@@ -5,6 +5,7 @@ from Service.PostService import PostService
 post_ns = Namespace('post', description='Post operations')
 
 post_model = post_ns.model('Post', {
+    'id': fields.Integer(required=True, description='Post ID'),
     'user_id': fields.Integer(required=True, description='User ID'),
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
@@ -128,8 +129,8 @@ class CategoryPostsResource(Resource):
         return posts
 
 
-@post_ns.route('')
-class PostsResource(Resource):
+@post_ns.route('/search')
+class PostsSearchResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('title', type=str, help='Title to filter posts', location='args')
 
