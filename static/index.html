@@ -9,8 +9,16 @@
 <body>
     <h1>Welcome to Blog App</h1>
     <div class="button-container">
-        <button onclick="location.href='login.html'"> Login</button>
-        <button onclick="location.href='register.html'"> Register</button>
+        <button onclick="location.href='login.html'">Login</button>
+        <button onclick="location.href='register.html'">Register</button>
+        <button id="forgot-password-btn">Forgot Password</button>
     </div>
+
+    <div id="forgot-password-form" style="display:none;">
+        <input type="email" id="reset-email" placeholder="Enter your email">
+        <button onclick="sendResetLink()">Send Reset Link</button>
+    </div>
+
+    <script src="js/auth.js"></script>
 </body>
 </html>

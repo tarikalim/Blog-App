@@ -43,11 +43,11 @@ class AuthService:
 
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         token = s.dumps(email, salt='email-confirm')
-        reset_link = f"http://localhost:5000/reset-password/{token}"
+        reset_link = f"http://localhost:5000/static/resetpassword.html?token={token}"
 
         try:
             send_email(email, "Password Reset", f"Click the link to reset your password: {reset_link}")
-            return "Success: An email has been sent to your email address to reset your password."
+            return "An email has been sent to your email address to reset your password. Please reset your password within 5 minutes."
         except Exception as e:
             return f"Error: An error occurred while sending the email: {str(e)}"
 
@@ -55,7 +55,7 @@ class AuthService:
     def change_password(token, new_password):
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         try:
-            email = s.loads(token, salt='email-confirm', max_age=1800)  # 30 dakika
+            email = s.loads(token, salt='email-confirm', max_age=300)
         except SignatureExpired:
             return "Error: The link has expired."
         except BadTimeSignature:

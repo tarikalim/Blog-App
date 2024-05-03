@@ -65,7 +65,7 @@ class ChangePasswordRequest(Resource):
 @auth_ns.route('/reset-password/<token>')
 class ResetPassword(Resource):
     @auth_ns.expect(update_password_model, validate=True)
-    def post(self, token):
+    def put(self, token):
         data = auth_ns.payload
         new_password = data['new_password']
         response = AuthService.change_password(token, new_password)
