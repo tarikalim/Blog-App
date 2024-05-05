@@ -96,7 +96,7 @@ class PostResource(Resource):
         post = PostService.get_post_by_id(post_id)
         if post is None:
             return {'message': 'Post not found.'}, 404
-        if post['user_id'] != current_user_id:
+        if post.user_id != current_user_id:
             return {'message': 'You can only update your own posts.'}, 403
 
         data = post_ns.payload
@@ -111,7 +111,7 @@ class PostResource(Resource):
         post = PostService.get_post_by_id(post_id)
         if post is None:
             return {'message': 'Post not found.'}, 404
-        if post['user_id'] != current_user_id:
+        if post.user_id != current_user_id:
             return {'message': 'You can only delete your own posts.'}, 403
 
         PostService.delete_post(post_id)

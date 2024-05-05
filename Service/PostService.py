@@ -1,21 +1,24 @@
 from Model.model import db, Post, Category
 
 
+class PostDTO:
+    def __init__(self, post, category_name):
+        self.id = post.id
+        self.user_id = post.user_id
+        self.title = post.title
+        self.content = post.content
+        self.publish_date = post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        self.category_id = post.category_id
+        self.category_name = category_name
+
+
 class PostService:
     @staticmethod
     def get_all_posts():
         results = db.session.query(Post, Category.name).join(Category).all()
         posts_data = []
         for post, category_name in results:
-            post_data = {
-                'id': post.id,
-                'user_id': post.user_id,
-                'title': post.title,
-                'content': post.content,
-                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),  # RFC822 format
-                'category_id': post.category_id,
-                'category_name': category_name
-            }
+            post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
         return posts_data if posts_data else None
 
@@ -24,15 +27,7 @@ class PostService:
         results = db.session.query(Post, Category.name).join(Category).filter(Post.user_id == user_id).all()
         posts_data = []
         for post, category_name in results:
-            post_data = {
-                'id': post.id,
-                'user_id': post.user_id,
-                'title': post.title,
-                'content': post.content,
-                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),  # RFC822 format
-                'category_id': post.category_id,
-                'category_name': category_name
-            }
+            post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
         return posts_data if posts_data else None
 
@@ -41,15 +36,7 @@ class PostService:
         result = db.session.query(Post, Category.name).join(Category).filter(Post.id == post_id).first()
         if result:
             post, category_name = result
-            post_data = {
-                'id': post.id,
-                'user_id': post.user_id,
-                'title': post.title,
-                'content': post.content,
-                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),  # RFC822 format
-                'category_id': post.category_id,
-                'category_name': category_name
-            }
+            post_data = PostDTO(post, category_name)
             return post_data
         return None
 
@@ -59,15 +46,7 @@ class PostService:
             Post.title.like(f'%{title}%')).all()
         posts_data = []
         for post, category_name in results:
-            post_data = {
-                'id': post.id,
-                'user_id': post.user_id,
-                'title': post.title,
-                'content': post.content,
-                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),
-                'category_id': post.category_id,
-                'category_name': category_name
-            }
+            post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
         return posts_data if posts_data else None
 
@@ -77,15 +56,7 @@ class PostService:
             Post.category_id == category_id).all()
         posts_data = []
         for post, category_name in results:
-            post_data = {
-                'id': post.id,
-                'user_id': post.user_id,
-                'title': post.title,
-                'content': post.content,
-                'publish_date': post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),
-                'category_id': post.category_id,
-                'category_name': category_name
-            }
+            post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
         return posts_data if posts_data else None
 

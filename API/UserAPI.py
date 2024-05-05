@@ -23,8 +23,8 @@ class UserResource(Resource):
     @jwt_required()
     def delete(self):
         current_user_id = get_jwt_identity()
-        user = UserService.delete_user(current_user_id)
-        return user
+        UserService.delete_user(current_user_id)
+        return {"message": "User successfully deleted."}, 200
 
     # get your info
     @jwt_required()

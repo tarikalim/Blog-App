@@ -2,18 +2,29 @@ from sqlalchemy.exc import IntegrityError
 from Model.model import db, User
 
 
+class UserDTO:
+    def __init__(self, user):
+        self.id = user.id
+        self.username = user.username
+        self.email = user.email
+        self.join_date = user.join_date
+
+
 class UserService:
     @staticmethod
     def get_user_by_id(user_id):
-        return User.query.get(user_id)
+        user = User.query.get(user_id)
+        return UserDTO(user) if user else None
 
     @staticmethod
     def get_users_by_username(username):
-        return User.query.filter(User.username.like(f"%{username}%")).all()
+        user = User.query.filter(User.username == username).first()
+        return UserDTO(user) if user else None
 
     @staticmethod
     def get_all_users():
-        return User.query.all()
+        users = User.query.all()
+        return [UserDTO(user) for user in users]
 
     @staticmethod
     def update_user(user_id, username=None, email=None):
@@ -28,14 +39,17 @@ class UserService:
                     raise ValueError("This email is already used.")
                 user.email = email
             db.session.commit()
+            return UserDTO(user)
         except IntegrityError:
             db.session.rollback()
             raise ValueError("Database error, could not update user information.")
-        return user
 
     @staticmethod
     def delete_user(user_id):
         user = User.query.get(user_id)
-        db.session.delete(user)
-        db.session.commit()
-        return user
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return "User successfully deleted."
+        else:
+            return "User not found."
