@@ -102,7 +102,7 @@ class PostResource(Resource):
         if post.user_id != current_user_id:
             abort(403, 'You can only delete your own posts')
         PostService.delete_post(post_id)
-        return 204
+        return '', 204
 
 
 @post_ns.route('/category/<int:category_id>')
