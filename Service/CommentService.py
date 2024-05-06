@@ -1,4 +1,5 @@
-from Model.model import db, Comment
+from Model.model import db, Comment, Post
+from Exception.exception import *
 
 
 class CommentDTO:
@@ -16,15 +17,16 @@ class CommentService:
     @staticmethod
     def get_comment_by_id(comment_id):
         comment = Comment.query.get(comment_id)
-        return CommentDTO(comment) if comment else None
-
-    @staticmethod
-    def get_all_comments():
-        comments = Comment.query.all()
-        return [CommentDTO(comment) for comment in comments]
+        if not comment:
+            raise CommentNotFoundException()
+        return CommentDTO(comment)
 
     @staticmethod
     def create_comment(user_id, post_id, content):
+        post = Post.query.get(post_id)
+        if not post:
+            raise PostNotFoundException("Post not found")
+
         new_comment = Comment(
             user_id=user_id,
             post_id=post_id,
@@ -32,33 +34,35 @@ class CommentService:
         )
         db.session.add(new_comment)
         db.session.commit()
+
         return CommentDTO(new_comment)
 
     @staticmethod
-    def update_comment(comment_id, user_id, content=None):
+    def update_comment(comment_id, content=None):
         comment = Comment.query.get(comment_id)
-        if not comment or comment.user_id != user_id:
-            return False
+        if not comment:
+            raise CommentNotFoundException()
+
         if content:
             comment.content = content
+
         db.session.commit()
         return CommentDTO(comment)
 
     @staticmethod
-    def delete_comment(comment_id, user_id):
+    def delete_comment(comment_id):
         comment = Comment.query.get(comment_id)
-        if not comment or comment.user_id != user_id:
-            return False, "You are not the owner of this comment"
+        if not comment:
+            raise CommentNotFoundException()
         db.session.delete(comment)
         db.session.commit()
-        return True, "Comment deleted successfully"
+        return comment
 
     @staticmethod
     def get_post_comments(post_id):
-        comments = Comment.query.filter_by(post_id=post_id).all()
-        return [CommentDTO(comment) for comment in comments]
+        post = Post.query.get(post_id)
+        if not post:
+            raise PostNotFoundException("Post not found")
 
-    @staticmethod
-    def get_user_comments(user_id):
-        comments = Comment.query.filter_by(user_id=user_id).all()
+        comments = Comment.query.filter_by(post_id=post_id).all()
         return [CommentDTO(comment) for comment in comments]

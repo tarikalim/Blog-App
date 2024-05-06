@@ -1,6 +1,7 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields, reqparse, abort
+from flask_restx import Resource, Namespace, fields, reqparse, marshal_with
 from Service.UserService import *
+from extensions import api
 
 user_ns = Namespace('user', description='User operations')
 
@@ -15,37 +16,47 @@ update_user_model = user_ns.model('UpdateUser', {
 })
 
 
+@api.errorhandler(UserNotFoundException)
+def handle_user_not_found_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(UserAlreadyExistsException)
+def handle_user_already_exists_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(DatabaseOperationException)
+def handle_database_operation_exception(error):
+    return {'message': error.message}, error.status_code
+
+
 # user specific operations
-@user_ns.route('')
+@user_ns.route('/')
 class UserResource(Resource):
-    # delete your account
-    @user_ns.marshal_with(user_model)
-    @jwt_required()
+    method_decorators = [jwt_required()]
+
+    @marshal_with(user_model)
+    def get(self):
+        """Get current user information from token"""
+        current_user_id = get_jwt_identity()
+        return UserService.get_user_by_id(current_user_id)
+
+    @marshal_with(user_model)
     def delete(self):
+        """Delete current user account and all related data"""
         current_user_id = get_jwt_identity()
         UserService.delete_user(current_user_id)
-        return {"message": "User successfully deleted."}, 200
+        return 204
 
-    # get your info
-    @jwt_required()
-    @user_ns.marshal_with(user_model)
-    def get(self):
-        current_user_id = get_jwt_identity()
-        user = UserService.get_user_by_id(current_user_id)
-        return user
-
-    # update your info
-    @jwt_required()
     @user_ns.expect(update_user_model, validate=True)
-    @user_ns.marshal_with(user_model)
+    @marshal_with(user_model)
     def put(self):
+        """Update current user information"""
         current_user_id = get_jwt_identity()
         data = user_ns.payload
-        try:
-            user = UserService.update_user(current_user_id, username=data['username'], email=data['email'])
-            return user
-        except ValueError as e:
-            abort(400, str(e))
+        user = UserService.update_user(current_user_id, **data)
+        return user
 
 
 parser = reqparse.RequestParser()
@@ -58,6 +69,7 @@ class UserSearch(Resource):
     @user_ns.expect(parser)
     @user_ns.marshal_list_with(user_model)
     def get(self):
+        """Search users by username"""
         args = parser.parse_args()
         username = args.get('username')
         if username:
