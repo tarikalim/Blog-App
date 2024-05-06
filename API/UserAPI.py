@@ -47,7 +47,7 @@ class UserResource(Resource):
         """Delete current user account and all related data"""
         current_user_id = get_jwt_identity()
         UserService.delete_user(current_user_id)
-        return 204
+        return '', 204
 
     @user_ns.expect(update_user_model, validate=True)
     @marshal_with(user_model)

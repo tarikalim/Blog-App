@@ -67,7 +67,7 @@ class CommentResource(Resource):
         if comment.user_id != current_user_id:
             abort(403, 'You can only delete your own comments')
         CommentService.delete_comment(comment_id)
-        return 204
+        return '', 204
 
     @jwt_required()
     @comment_ns.expect(update_comment_model, validate=True)
