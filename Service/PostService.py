@@ -21,8 +21,6 @@ class PostService:
         for post, category_name in results:
             post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
-        if not posts_data:
-            raise PostNotFoundException()
         return posts_data
 
     @staticmethod
@@ -53,8 +51,6 @@ class PostService:
         for post, category_name in results:
             post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
-        if not posts_data:
-            raise PostNotFoundException(f"No posts found with title '{title}'")
         return posts_data
 
     @staticmethod
@@ -65,12 +61,13 @@ class PostService:
         for post, category_name in results:
             post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
-        if not posts_data:
-            raise PostNotFoundException(f"No posts found for category with ID {category_id}")
         return posts_data
 
     @staticmethod
     def create_post(user_id, title, content, category_id):
+        category = Category.query.get(category_id)
+        if not category:
+            raise CategoryNotFoundException()
         new_post = Post(
             user_id=user_id,
             title=title,
@@ -79,11 +76,13 @@ class PostService:
         )
         db.session.add(new_post)
         db.session.commit()
-        return new_post
+        return PostDTO(new_post, category.name)
 
     @staticmethod
     def update_post(post_id, title=None, content=None):
         post = Post.query.get(post_id)
+        category = Category.query.get(post.category_id)
+
         if not post:
             raise PostNotFoundException()
 
@@ -93,7 +92,7 @@ class PostService:
             post.content = content
 
         db.session.commit()
-        return post
+        return PostDTO(post, category.name)
 
     @staticmethod
     def delete_post(post_id):

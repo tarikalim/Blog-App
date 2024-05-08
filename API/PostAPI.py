@@ -36,6 +36,11 @@ def handle_database_operation_exception(error):
     return {'message': error.message}, error.status_code
 
 
+@api.errorhandler(CategoryNotFoundException)
+def handle_category_not_found_exception(error):
+    return {'message': error.message}, error.status_code
+
+
 # posts related operations
 
 @post_ns.route('/user')
