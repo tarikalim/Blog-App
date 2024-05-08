@@ -9,6 +9,7 @@ user_model = user_ns.model('User', {
     'username': fields.String(required=True, description='Username'),
     'email': fields.String(required=True, description='Email'),
     'join_date': fields.DateTime(description='Join Date'),
+    'id': fields.Integer(description='User ID')
 })
 update_user_model = user_ns.model('UpdateUser', {
     'username': fields.String(required=True, description='Username'),
@@ -42,7 +43,6 @@ class UserResource(Resource):
         current_user_id = get_jwt_identity()
         return UserService.get_user_by_id(current_user_id)
 
-    @marshal_with(user_model)
     def delete(self):
         """Delete current user account and all related data"""
         current_user_id = get_jwt_identity()
@@ -55,8 +55,7 @@ class UserResource(Resource):
         """Update current user information"""
         current_user_id = get_jwt_identity()
         data = user_ns.payload
-        user = UserService.update_user(current_user_id, **data)
-        return user
+        return UserService.update_user(current_user_id, **data)
 
 
 parser = reqparse.RequestParser()

@@ -43,8 +43,7 @@ class PostService:
             raise PostNotFoundException("Post not found")
 
         post, category_name = result
-        post_data = PostDTO(post, category_name)
-        return post_data
+        return PostDTO(post, category_name)
 
     @staticmethod
     def get_posts_by_title(title):
@@ -104,4 +103,4 @@ class PostService:
 
         db.session.delete(post)
         db.session.commit()
-        return post
+        return None

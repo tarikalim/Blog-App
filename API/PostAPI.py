@@ -47,8 +47,7 @@ class UserPostsResource(Resource):
     def get(self):
         """Get all posts of the current user."""
         user_id = get_jwt_identity()
-        posts = PostService.get_user_posts(user_id)
-        return posts
+        return PostService.get_user_posts(user_id)
 
 
 @post_ns.route('')
@@ -62,9 +61,8 @@ class PostsResource(Resource):
         """Create a new post. User must be logged in."""
         current_user_id = get_jwt_identity()
         data = post_ns.payload
-        post = PostService.create_post(user_id=current_user_id, title=data['title'], content=data['content'],
+        return PostService.create_post(user_id=current_user_id, title=data['title'], content=data['content'],
                                        category_id=data['category_id'])
-        return post
 
 
 @post_ns.route('/<int:post_id>')
@@ -75,8 +73,7 @@ class PostResource(Resource):
     @post_ns.doc(description='Get a post by its ID.')
     def get(self, post_id):
         """Get a post by its ID."""
-        post = PostService.get_post_by_id(post_id)
-        return post
+        return PostService.get_post_by_id(post_id)
 
     @jwt_required()
     @post_ns.expect(update_post_model, validate=True)
@@ -90,8 +87,7 @@ class PostResource(Resource):
             abort(403, 'You can only update your own posts')
 
         data = post_ns.payload
-        updated_post = PostService.update_post(post_id, title=data['title'], content=data['content'])
-        return updated_post
+        return PostService.update_post(post_id, title=data['title'], content=data['content'])
 
     @jwt_required()
     @post_ns.doc(description='Delete a post by ID')
@@ -102,7 +98,7 @@ class PostResource(Resource):
         if post.user_id != current_user_id:
             abort(403, 'You can only delete your own posts')
         PostService.delete_post(post_id)
-        return '', 204
+        return "", 204
 
 
 @post_ns.route('/category/<int:category_id>')
@@ -110,8 +106,7 @@ class CategoryPostsResource(Resource):
     @post_ns.marshal_list_with(post_model)
     def get(self, category_id):
         """Get all posts of a category by its ID."""
-        posts = PostService.get_posts_by_category(category_id)
-        return posts
+        return PostService.get_posts_by_category(category_id)
 
 
 @post_ns.route('/search')

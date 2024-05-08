@@ -56,7 +56,7 @@ class CommentService:
             raise CommentNotFoundException()
         db.session.delete(comment)
         db.session.commit()
-        return comment
+        return None
 
     @staticmethod
     def get_post_comments(post_id):

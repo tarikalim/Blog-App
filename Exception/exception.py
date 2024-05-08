@@ -123,3 +123,24 @@ class TokenInvalidException(ApplicationException):
 
     def __init__(self, message="Token is invalid"):
         super().__init__(message, status_code=400)
+
+
+class PostAlreadyLikedException(ApplicationException):
+    """Exception raised when a post is already liked."""
+
+    def __init__(self, message="Post already liked"):
+        super().__init__(message, status_code=400)
+
+
+class LikeNotFoundException(ApplicationException):
+    """Exception raised when a like is not found."""
+
+    def __init__(self, message="Like not found"):
+        super().__init__(message, status_code=404)
+
+
+class LikeAlreadyExistsException(ApplicationException):
+    """Exception raised when a like already exists."""
+
+    def __init__(self, message="You already liked this post"):
+        super().__init__(message, status_code=400)

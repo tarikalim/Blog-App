@@ -21,8 +21,6 @@ class UserService:
     @staticmethod
     def get_users_by_username(username):
         user = User.query.filter(User.username == username).first()
-        if not user:
-            raise UserNotFoundException()
         return UserDTO(user)
 
     @staticmethod
@@ -56,4 +54,4 @@ class UserService:
             raise UserNotFoundException()
         db.session.delete(user)
         db.session.commit()
-        return user
+        return None

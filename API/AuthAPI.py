@@ -65,8 +65,7 @@ class UserRegistration(Resource):
     @auth_ns.marshal_with(user_registration_model)
     def post(self):
         data = auth_ns.payload
-        new_user = AuthService.register_user(username=data['username'], email=data['email'], password=data['password'])
-        return new_user
+        return AuthService.register_user(username=data['username'], email=data['email'], password=data['password'])
 
 
 @auth_ns.route('/login')

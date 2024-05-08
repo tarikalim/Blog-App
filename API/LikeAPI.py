@@ -1,7 +1,7 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields, abort
-
-from Service.LikeService import LikeService
+from flask_restx import Resource, Namespace, fields
+from Service.LikeService import *
+from extensions import api
 
 # Namespace
 like_ns = Namespace('like', description='Handle likes on posts')
@@ -13,9 +13,23 @@ like_model = like_ns.model('Like', {
 })
 
 like_count_model = like_ns.model('LikeCount', {
-    'post_id': fields.Integer(description='Post ID'),
     'like_count': fields.Integer(description='Total number of likes'),
 })
+
+
+@api.errorhandler(LikeAlreadyExistsException)
+def handle_like_already_exists_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(LikeNotFoundException)
+def handle_like_not_found_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(PostNotFoundException)
+def handle_post_not_found_exception(error):
+    return {'message': error.message}, error.status_code
 
 
 # Like operations
@@ -26,25 +40,16 @@ class LikeResource(Resource):
     @like_ns.marshal_with(like_model)
     def post(self, post_id):
         user_id = get_jwt_identity()
-        new_like = LikeService.create_like(user_id, post_id)
-        if new_like is None:
-            return abort(409, 'Post already liked.')
-        return new_like, 201
+        return LikeService.create_like(user_id, post_id)
 
     # Get the number of likes on a post
     @like_ns.marshal_with(like_count_model)
     def get(self, post_id):
-        like_count = LikeService.get_post_likes(post_id)
-        return {
-            'post_id': post_id,
-            'like_count': like_count
-        }
+        return LikeService.get_post_likes(post_id)
 
     # Unlike a post
     @jwt_required()
     def delete(self, post_id):
         user_id = get_jwt_identity()
-        success, message = LikeService.delete_like(user_id, post_id)
-        if not success:
-            abort(404, message)
-        return {'message': message}, 200
+        LikeService.delete_like(user_id, post_id)
+        return "", 204

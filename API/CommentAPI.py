@@ -40,8 +40,7 @@ class CommentsResource(Resource):
     @comment_ns.doc(description='Get all comments for a post')
     def get(self, post_id):
         """Get all comments for a post."""
-        comments = CommentService.get_post_comments(post_id)
-        return comments
+        return CommentService.get_post_comments(post_id)
 
     @jwt_required()
     @comment_ns.expect(create_comment_model, validate=True)
@@ -51,9 +50,8 @@ class CommentsResource(Resource):
         """Create a new comment for a post. User must be logged in."""
         current_user_id = get_jwt_identity()
         data = comment_ns.payload
-        comment = CommentService.create_comment(user_id=current_user_id, post_id=post_id,
-                                                content=data['content'])
-        return comment, 201
+        return CommentService.create_comment(user_id=current_user_id, post_id=post_id,
+                                             content=data['content'])
 
 
 @comment_ns.route('/<int:comment_id>')
@@ -80,5 +78,5 @@ class CommentResource(Resource):
         if comment.user_id != current_user_id:
             abort(403, 'You can only update your own comments')
         data = comment_ns.payload
-        comment = CommentService.update_comment(comment_id=comment_id, content=data['content'])
-        return comment, 200
+        return CommentService.update_comment(comment_id=comment_id, content=data['content']), 200
+
