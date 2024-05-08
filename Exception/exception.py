@@ -144,3 +144,17 @@ class LikeAlreadyExistsException(ApplicationException):
 
     def __init__(self, message="You already liked this post"):
         super().__init__(message, status_code=400)
+
+
+class FavoriteNotFoundException(ApplicationException):
+    """Exception raised when a favorite is not found."""
+
+    def __init__(self, message="Favorite not found"):
+        super().__init__(message, status_code=404)
+
+
+class FavoriteAlreadyExistsException(ApplicationException):
+    """Exception raised when a favorite already exists."""
+
+    def __init__(self, message="You already favorited this post"):
+        super().__init__(message, status_code=400)

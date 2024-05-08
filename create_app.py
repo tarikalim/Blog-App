@@ -7,6 +7,7 @@ from API.PostAPI import post_ns
 from API.CommentAPI import comment_ns
 from API.LikeAPI import like_ns
 from API.CategoryAPI import category_ns
+from API.FavoriteAPI import favorite_ns
 
 
 def create_app():
@@ -19,6 +20,7 @@ def create_app():
     api.add_namespace(comment_ns, path='/comment')
     api.add_namespace(like_ns, path='/like')
     api.add_namespace(category_ns, path='/category')
+    api.add_namespace(favorite_ns, path='/favorite')
 
     mail.init_app(app)
     db.init_app(app)
