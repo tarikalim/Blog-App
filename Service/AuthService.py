@@ -5,17 +5,18 @@ from Model.model import db, User
 from flask_jwt_extended import create_access_token
 from Helper.userValidation import validate_password, validate_email
 from flask import current_app
+from Exception.exception import *
 
 
 class AuthService:
     @staticmethod
     def register_user(username, email, password):
         if User.query.filter((User.username == username) | (User.email == email)).first():
-            return None
+            raise UserAlreadyExistsException()
         if not validate_password(password):
-            return "Password must be at least 8 characters long and contain at least one uppercase letter and one number."
+            raise InvalidPasswordException()
         if not validate_email(email):
-            return "Invalid email format or domain is not valid."
+            raise InvalidEmailException()
 
         new_user = User(
             username=username,
@@ -33,23 +34,22 @@ class AuthService:
             access_token = create_access_token(identity=user.id)
             return access_token
 
-        return None
+        raise InvalidCredentialsException()
 
     @staticmethod
     def reset_password_request(email):
         user = User.query.filter_by(email=email).first()
         if not user:
-            return "Error: User not found."
+            raise UserNotFoundException()
 
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         token = s.dumps(email, salt='email-confirm')
         reset_link = f"http://localhost:5000/static/resetpassword.html?token={token}"
-
         try:
             send_email(email, "Password Reset", f"Click the link to reset your password: {reset_link}")
             return "An email has been sent to your email address to reset your password. Please reset your password within 5 minutes."
-        except Exception as e:
-            return f"Error: An error occurred while sending the email: {str(e)}"
+        except Exception:
+            raise MailSendException()
 
     @staticmethod
     def change_password(token, new_password):
@@ -57,16 +57,15 @@ class AuthService:
         try:
             email = s.loads(token, salt='email-confirm', max_age=300)
         except SignatureExpired:
-            return "Error: The link has expired."
+            raise TokenExpiredException()
         except BadTimeSignature:
-            return "Error: Invalid link."
+            raise TokenInvalidException()
 
         if not validate_password(new_password):
-            return "Error: Password must be at least 8 characters long and contain at least one uppercase letter and one number."
-
+            raise InvalidPasswordException()
         user = User.query.filter_by(email=email).first()
         if not user:
-            return "Error: User not found."
+            raise UserNotFoundException()
         user.password = generate_password_hash(new_password)
         db.session.commit()
         return "Success: Password has been changed."

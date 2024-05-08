@@ -82,3 +82,44 @@ class CommentUpdateFailedException(ApplicationException):
     def __init__(self, message="Comment update failed"):
         super().__init__(message, status_code=500)
 
+
+class InvalidPasswordException(ApplicationException):
+    """Exception raised when an invalid password is provided."""
+
+    def __init__(self, message="Invalid password"):
+        super().__init__(message, status_code=400)
+
+
+class InvalidEmailException(ApplicationException):
+    """Exception raised when an invalid email is provided."""
+
+    def __init__(self, message="Invalid email"):
+        super().__init__(message, status_code=400)
+
+
+class InvalidCredentialsException(ApplicationException):
+    """Exception raised when invalid credentials are provided."""
+
+    def __init__(self, message="Invalid credentials"):
+        super().__init__(message, status_code=401)
+
+
+class MailSendException(ApplicationException):
+    """Exception raised when an error occurs while sending an email."""
+
+    def __init__(self, message="Error occurred while sending email"):
+        super().__init__(message, status_code=500)
+
+
+class TokenExpiredException(ApplicationException):
+    """Exception raised when a token has expired."""
+
+    def __init__(self, message="Token has expired"):
+        super().__init__(message, status_code=400)
+
+
+class TokenInvalidException(ApplicationException):
+    """Exception raised when a token is invalid."""
+
+    def __init__(self, message="Token is invalid"):
+        super().__init__(message, status_code=400)

@@ -1,5 +1,6 @@
 from flask_restx import Resource, Namespace, fields
 from Service.AuthService import *
+from extensions import api
 
 auth_ns = Namespace('auth', description='Authentication  operations')
 
@@ -21,23 +22,51 @@ update_password_model = auth_ns.model('UserUpdatePassword', {
 })
 
 
+@api.errorhandler(UserAlreadyExistsException)
+def handle_user_already_exists_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(InvalidPasswordException)
+def handle_invalid_password_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(InvalidEmailException)
+def handle_invalid_email_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(InvalidCredentialsException)
+def handle_invalid_credentials_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(MailSendException)
+def handle_mail_send_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(TokenExpiredException)
+def handle_token_expired_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(TokenInvalidException)
+def handle_token_invalid_exception(error):
+    return {'message': error.message}, error.status_code
+
+
 # auth specific operations
 @auth_ns.route('/register')
 class UserRegistration(Resource):
     # register a new user
     @auth_ns.expect(user_registration_model, validate=True)
+    @auth_ns.marshal_with(user_registration_model)
     def post(self):
         data = auth_ns.payload
-        result = AuthService.register_user(username=data['username'],
-                                           email=data['email'],
-                                           password=data['password']
-                                           )
-        if isinstance(result, User):
-            return {'message': 'User created successfully.'}, 201
-        elif result is None:
-            auth_ns.abort(409, 'User already exists.')
-        else:
-            auth_ns.abort(400, result)
+        new_user = AuthService.register_user(username=data['username'], email=data['email'], password=data['password'])
+        return new_user
 
 
 @auth_ns.route('/login')
@@ -46,10 +75,7 @@ class UserLogin(Resource):
     def post(self):
         data = auth_ns.payload
         token = AuthService.login_user(username=data['username'], password=data['password'])
-        if token:
-            return {'token': token}, 200
-        else:
-            auth_ns.abort(401, 'Invalid credentials')
+        return {'token': token}, 200
 
 
 @auth_ns.route('/change-password-request')
@@ -59,7 +85,7 @@ class ChangePasswordRequest(Resource):
         data = auth_ns.payload
         email = data['email']
         response = AuthService.reset_password_request(email)
-        return {'message': response}, 200 if "Success" in response else 400
+        return {'message': response}, 200
 
 
 @auth_ns.route('/reset-password/<token>')
@@ -69,4 +95,4 @@ class ResetPassword(Resource):
         data = auth_ns.payload
         new_password = data['new_password']
         response = AuthService.change_password(token, new_password)
-        return {'message': response}, 200 if "Success" in response else 400
+        return {'message': response}, 200
