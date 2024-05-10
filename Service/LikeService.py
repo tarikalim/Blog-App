@@ -13,6 +13,13 @@ class LikeDTO:
         self.post_id = post_id
 
 
+class UserLikeStatusDTO:
+    def __init__(self, user_id, post_id, status):
+        self.user_id = user_id
+        self.post_id = post_id
+        self.status = status
+
+
 class LikeService:
 
     @staticmethod
@@ -51,3 +58,13 @@ class LikeService:
             raise PostNotFoundException()
         like_count = Like.query.filter_by(post_id=post_id).count()
         return LikeCountDTO(like_count)
+
+    @staticmethod
+    def get_user_like_status(user_id, post_id):
+        post = Post.query.get(post_id)
+        if not post:
+            raise PostNotFoundException()
+        like = Like.query.filter_by(user_id=user_id, post_id=post_id).first()
+        if like:
+            return UserLikeStatusDTO(like.user_id, like.post_id, True)
+        return UserLikeStatusDTO(user_id, post_id, False)

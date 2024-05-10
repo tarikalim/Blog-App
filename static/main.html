@@ -5,17 +5,21 @@
     <title>Main Page</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="main-header">
 <header>
-    <button id="profileButton">Profile</button>
-    <button id="createPostButton">Create a New Post</button>
-    <input type="text" id="searchInput" placeholder="Search a post...">
-    <button id="searchButton">Search</button>
+    <div class="top-buttons">
+        <button id="profileButton">Profile</button>
+        <button id="createPostButton">Create a New Post</button>
+        <button onclick="window.location.href='login.html'">Login</button>
 
-
-    <select id="categorySelect">
-        <option value="">All Categories</option>
-    </select>
+    </div>
+    <div class="search-category-container">
+        <input type="text" id="searchInput" placeholder="Search a post...">
+        <button id="searchButton">Search</button>
+        <select id="categorySelect">
+            <option value="">All Categories</option>
+        </select>
+    </div>
 </header>
 
 <main id="mainContent">

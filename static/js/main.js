@@ -27,18 +27,17 @@ function loadCategories() {
 }
 
 function loadPosts(searchQuery = '', categoryId = '') {
-    let url = '/post';
-    if (searchQuery || categoryId) {
-        url += '?';
-        if (searchQuery) {
-            url += `title=${encodeURIComponent(searchQuery)}`;
-        }
-        if (searchQuery && categoryId) {
-            url += '&';
-        }
-        if (categoryId) {
-            url += `category_id=${encodeURIComponent(categoryId)}`;
-        }
+    let url = '/post/search';
+    let params = [];
+
+    if (searchQuery) {
+        params.push(`title=${encodeURIComponent(searchQuery)}`);
+    }
+    if (categoryId) {
+        params.push(`category_id=${encodeURIComponent(categoryId)}`);
+    }
+    if (params.length > 0) {
+        url += '?' + params.join('&');
     }
 
     fetch(url)
@@ -49,16 +48,18 @@ function loadPosts(searchQuery = '', categoryId = '') {
             posts.forEach(post => {
                 const postElement = document.createElement('div');
                 postElement.innerHTML = `<h2>${post.title}</h2><p>Category: ${post.category_name}</p><p>${post.content}</p>`;
-
                 postElement.addEventListener('click', function () {
                     window.location.href = `/static/post_detail.html?post_id=${post.id}`;
                 });
-
                 postsContainer.appendChild(postElement);
             });
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load posts. Please try again.');
+        });
 }
+
 
 window.onload = function () {
     loadCategories();

@@ -1,5 +1,5 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields, abort
+from flask_restx import Resource, Namespace, fields
 from Service.CommentService import *
 from extensions import api
 
@@ -23,6 +23,15 @@ update_comment_model = comment_ns.model('UpdateComment', {
     'content': fields.String(required=True, description='Content'),
 })
 
+comment_user_model = comment_ns.model('CommentUser', {
+    'id': fields.Integer(required=True, description='User ID'),
+    'username': fields.String(required=True, description='Username'),
+    'user_id': fields.Integer(required=True, description='User ID'),
+    'post_id': fields.Integer(required=True, description='Post ID'),
+    'content': fields.String(required=True, description='Content'),
+    'comment_date': fields.DateTime(description='Comment Date'),
+})
+
 
 @api.errorhandler(CommentNotFoundException)
 def handle_comment_not_found_exception(error):
@@ -34,9 +43,14 @@ def handle_database_operation_exception(error):
     return {'message': error.message}, error.status_code
 
 
+@api.errorhandler(AuthorizationException)
+def handle_authorization_exception(error):
+    return {'message': error.message}, error.status_code
+
+
 @comment_ns.route('/<int:post_id>')
 class CommentsResource(Resource):
-    @comment_ns.marshal_list_with(comment_model)
+    @comment_ns.marshal_list_with(comment_user_model)
     @comment_ns.doc(description='Get all comments for a post')
     def get(self, post_id):
         """Get all comments for a post."""
@@ -63,7 +77,7 @@ class CommentResource(Resource):
         current_user_id = get_jwt_identity()
         comment = CommentService.get_comment_by_id(comment_id)
         if comment.user_id != current_user_id:
-            abort(403, 'You can only delete your own comments')
+            raise AuthorizationException('You can only delete your own comments')
         CommentService.delete_comment(comment_id)
         return '', 204
 
@@ -76,7 +90,6 @@ class CommentResource(Resource):
         current_user_id = get_jwt_identity()
         comment = CommentService.get_comment_by_id(comment_id)
         if comment.user_id != current_user_id:
-            abort(403, 'You can only update your own comments')
+            raise AuthorizationException('You can only update your own comments')
         data = comment_ns.payload
         return CommentService.update_comment(comment_id=comment_id, content=data['content']), 200
-

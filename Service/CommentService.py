@@ -1,4 +1,4 @@
-from Model.model import db, Comment, Post
+from Model.model import db, Comment, Post, User
 from Exception.exception import *
 
 
@@ -10,6 +10,17 @@ class CommentDTO:
         self.content = comment.content
         self.comment_date = comment.comment_date.strftime(
             '%Y-%m-%dT%H:%M:%SZ')
+
+
+class UserCommentDTO:
+    def __init__(self, comment, username):
+        self.id = comment.id
+        self.post_id = comment.post_id
+        self.user_id = comment.user_id
+        self.content = comment.content
+        self.comment_date = comment.comment_date.strftime(
+            '%Y-%m-%dT%H:%M:%SZ')
+        self.username = username
 
 
 class CommentService:
@@ -64,5 +75,6 @@ class CommentService:
         if not post:
             raise PostNotFoundException("Post not found")
 
-        comments = Comment.query.filter_by(post_id=post_id).all()
-        return [CommentDTO(comment) for comment in comments]
+        comments = db.session.query(Comment, User.username).join(User, Comment.user_id == User.id).filter(
+            Comment.post_id == post_id).all()
+        return [UserCommentDTO(comment, username) for comment, username in comments]

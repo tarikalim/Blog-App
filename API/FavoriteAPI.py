@@ -1,5 +1,5 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields, abort
+from flask_restx import Resource, Namespace, fields
 from Service.FavoriteService import *
 from extensions import api
 
@@ -26,6 +26,11 @@ def handle_post_not_found_exception(error):
 
 @api.errorhandler(FavoriteAlreadyExistsException)
 def handle_favorite_already_exists_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(AuthorizationException)
+def handle_authorization_exception(error):
     return {'message': error.message}, error.status_code
 
 
@@ -61,5 +66,5 @@ class FavoriteResource(Resource):
         current_user_id = get_jwt_identity()
         favorite = FavoriteService.get_favorite_by_id(favorite_id)
         if favorite.user_id != current_user_id:
-            abort(403, 'You can only edit your favorites.')
+            raise AuthorizationException('You are not authorized to delete this favorite.')
         return FavoriteService.delete_favorite(favorite_id)

@@ -30,8 +30,6 @@ class PostService:
         for post, category_name in results:
             post_data = PostDTO(post, category_name)
             posts_data.append(post_data)
-        if not posts_data:
-            raise PostNotFoundException("No posts found for the user")
         return posts_data
 
     @staticmethod

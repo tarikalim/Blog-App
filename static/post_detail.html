@@ -2,9 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Post Detail</title>
 </head>
 <body>
+<header class="navigation">
+    <button onclick="window.location.href='main.html'">Back to Main Page</button>
+</header>
+<div class="post-detail-container" id="postDetails">
+    <div class="post-details">
+        <h2 id="postTitle"></h2>
+        <p id="publishDate"></p>
+        <p id="categoryName"></p>
+        <p id="postContent"></p>
 
+    </div>
+
+    <div class="like-section">
+        <button id="likeButton">Like/Unlike This Post</button>
+                <span id="likeCount">0</span>
+
+    </div>
+
+
+    <div class="comments-section">
+        <label for="commentInput"></label><textarea id="commentInput"
+                                                    placeholder="Write your comment here about this post..."></textarea>
+        <button id="commentButton">Post Comment</button>
+        <h3>Comments</h3>
+        <ul id="commentList"></ul>
+    </div>
+</div>
+
+<script src="js/post_detail.js"></script>
 </body>
 </html>

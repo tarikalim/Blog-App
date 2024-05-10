@@ -86,7 +86,8 @@ class CommentUpdateFailedException(ApplicationException):
 class InvalidPasswordException(ApplicationException):
     """Exception raised when an invalid password is provided."""
 
-    def __init__(self, message="Invalid password"):
+    def __init__(self, message="Invalid password, password must be at least 8 characters long and contain at least one "
+                               "uppercase letter, one lowercase letter, one number, and one special character"):
         super().__init__(message, status_code=400)
 
 
@@ -158,3 +159,10 @@ class FavoriteAlreadyExistsException(ApplicationException):
 
     def __init__(self, message="You already favorited this post"):
         super().__init__(message, status_code=400)
+
+
+class AuthorizationException(ApplicationException):
+    """Exception raised when a user is not authorized to perform an action."""
+
+    def __init__(self, message="You are not authorized to perform this action"):
+        super().__init__(message, status_code=403)

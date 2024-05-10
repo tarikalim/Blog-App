@@ -7,7 +7,8 @@ class UserDTO:
         self.id = user.id
         self.username = user.username
         self.email = user.email
-        self.join_date = user.join_date
+        self.join_date = user.join_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
 
 
 class UserService:

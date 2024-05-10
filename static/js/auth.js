@@ -2,31 +2,27 @@ document.addEventListener('DOMContentLoaded', function () {
     var loginForm = document.getElementById('loginForm');
     loginForm.onsubmit = function (e) {
         e.preventDefault();
-
         var username = document.getElementById('username').value;
         var password = document.getElementById('password').value;
 
         fetch('/auth/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username, password})
         })
-            .then(response => {
-                if (!response.ok) throw new Error('Login failed');
-                return response.json();
-            })
-            .then(data => {
-                localStorage.setItem('token', data.token);
+            .then(response => response.json().then(data => ({status: response.status, body: data})))
+            .then(result => {
+                if (result.status >= 400) throw new Error(result.body.message || 'Login failed');
+                localStorage.setItem('token', result.body.token);
                 window.location.href = 'main.html';
             })
             .catch(error => {
                 console.error('Login Error:', error);
-                alert('Wrong Credentials.');
+                alert(error.message);
             });
     };
 });
+
 document.addEventListener('DOMContentLoaded', function () {
     var registerForm = document.getElementById('registerForm');
     if (registerForm) {
@@ -39,27 +35,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
             fetch('/auth/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({username, email, password})
             })
-                .then(response => {
-                    if (!response.ok) throw new Error('Registration failed');
-                    return response.json();
-                })
-                .then(data => {
+                .then(response => response.json().then(data => ({status: response.status, body: data})))
+                .then(result => {
+                    if (result.status >= 400) throw new Error(result.body.message || 'Registration failed');
                     window.location.href = 'login.html';
                 })
                 .catch(error => {
                     console.error('Registration Error:', error);
-                    alert('Registration failed.');
+                    alert(error.message);
                 });
         };
     }
 });
-document.addEventListener('DOMContentLoaded', function () {
 
+
+document.addEventListener('DOMContentLoaded', function () {
     var forgotPasswordBtn = document.getElementById('forgot-password-btn');
     var forgotPasswordForm = document.getElementById('forgot-password-form');
 
@@ -73,14 +66,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var email = document.getElementById('reset-email').value;
         fetch('/auth/change-password-request', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email: email})
         })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
+                if (data.message) alert(data.message);
                 forgotPasswordForm.style.display = 'none';
             })
             .catch(error => {
@@ -89,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     };
 });
+
 
 document.getElementById('reset-password-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -106,23 +98,19 @@ document.getElementById('reset-password-form').addEventListener('submit', functi
 
     fetch(`/auth/reset-password/${token}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({new_password: newPassword})
     })
         .then(response => response.json())
         .then(data => {
-            if (data.message === "Success: Password has been changed.") {
-                alert('Your password has been successfully reset. You can now login with your new password.');
-                window.location.href = 'login.html';
-            } else {
-                alert(data.message);
-            }
+            if (data.message !== "Success: Password has been changed.") throw new Error(data.message);
+            alert('Your password has been successfully reset. You can now login with your new password.');
+            window.location.href = 'login.html';
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Failed to reset password.');
+            alert(error.message);
         });
 });
+
 

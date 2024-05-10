@@ -7,7 +7,6 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     description = db.Column(db.Text)
-    # Relationship to Post
     posts = db.relationship('Post', backref='category', cascade="all, delete-orphan")
 
 

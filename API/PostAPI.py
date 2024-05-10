@@ -1,5 +1,5 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Resource, Namespace, fields, reqparse, abort
+from flask_restx import Resource, Namespace, fields, reqparse
 from Service.PostService import *
 from extensions import api
 
@@ -38,6 +38,11 @@ def handle_database_operation_exception(error):
 
 @api.errorhandler(CategoryNotFoundException)
 def handle_category_not_found_exception(error):
+    return {'message': error.message}, error.status_code
+
+
+@api.errorhandler(AuthorizationException)
+def handle_authorization_exception(error):
     return {'message': error.message}, error.status_code
 
 
@@ -89,7 +94,7 @@ class PostResource(Resource):
         current_user_id = get_jwt_identity()
         post = PostService.get_post_by_id(post_id)
         if post.user_id != current_user_id:
-            abort(403, 'You can only update your own posts')
+            raise AuthorizationException('You can only update your own posts')
 
         data = post_ns.payload
         return PostService.update_post(post_id, title=data['title'], content=data['content'])
@@ -101,7 +106,7 @@ class PostResource(Resource):
         current_user_id = get_jwt_identity()
         post = PostService.get_post_by_id(post_id)
         if post.user_id != current_user_id:
-            abort(403, 'You can only delete your own posts')
+            raise AuthorizationException('You can only delete your own posts')
         PostService.delete_post(post_id)
         return "", 204
 
