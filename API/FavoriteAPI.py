@@ -13,6 +13,12 @@ favorite_model = favorite_ns.model('Favorite', {
     'content': fields.String(description='Content'),
 })
 
+user_favorite_status_model = favorite_ns.model('UserFavoriteStatus', {
+    'user_id': fields.Integer(description='User ID of the favoriter'),
+    'post_id': fields.Integer(description='Post ID'),
+    'status': fields.Boolean(description='True if user has favorited the post, False otherwise')
+})
+
 
 @api.errorhandler(FavoriteNotFoundException)
 def handle_favorite_not_found_exception(error):
@@ -68,3 +74,14 @@ class FavoriteResource(Resource):
         if favorite.user_id != current_user_id:
             raise AuthorizationException('You are not authorized to delete this favorite.')
         return FavoriteService.delete_favorite(favorite_id)
+
+
+@favorite_ns.route('/status/<int:post_id>')
+class FavoriteStatusResource(Resource):
+
+    @jwt_required()
+    @favorite_ns.marshal_with(user_favorite_status_model)
+    def get(self, post_id):
+        """Get the status of a user's favorite on a post. token required."""
+        user_id = get_jwt_identity()
+        return FavoriteService.get_user_favorite_status(user_id, post_id)

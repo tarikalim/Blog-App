@@ -18,6 +18,13 @@ class FavoritePostDTO:
         self.content = post_content
 
 
+class FavoriteStatusDTO:
+    def __init__(self, user_id, post_id, status):
+        self.user_id = user_id
+        self.post_id = post_id
+        self.status = status
+
+
 class FavoriteService:
 
     @staticmethod
@@ -67,3 +74,13 @@ class FavoriteService:
         db.session.delete(favorite)
         db.session.commit()
         return None
+
+    @staticmethod
+    def get_user_favorite_status(user_id, post_id):
+        post = Post.query.get(post_id)
+        if not post:
+            raise PostNotFoundException()
+        favorite = Favorite.query.filter_by(user_id=user_id, post_id=post_id).first()
+        if favorite:
+            return FavoriteStatusDTO(user_id, post_id, True)
+        return FavoriteStatusDTO(user_id, post_id, False)
