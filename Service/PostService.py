@@ -53,6 +53,9 @@ class PostService:
 
     @staticmethod
     def get_posts_by_category(category_id):
+        category = Category.query.get(category_id)
+        if not category:
+            raise CategoryNotFoundException
         results = db.session.query(Post, Category.name).join(Category, Post.category_id == Category.id).filter(
             Post.category_id == category_id).all()
         posts_data = []

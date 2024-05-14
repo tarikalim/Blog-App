@@ -1,7 +1,6 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Resource, Namespace, fields, reqparse, marshal_with
 from Service.UserService import *
-from extensions import api
 
 user_ns = Namespace('user', description='User operations')
 
@@ -15,21 +14,6 @@ update_user_model = user_ns.model('UpdateUser', {
     'username': fields.String(required=True, description='Username'),
     'email': fields.String(required=True, description='Email'),
 })
-
-
-@api.errorhandler(UserNotFoundException)
-def handle_user_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(UserAlreadyExistsException)
-def handle_user_already_exists_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(DatabaseOperationException)
-def handle_database_operation_exception(error):
-    return {'message': error.message}, error.status_code
 
 
 # user specific operations

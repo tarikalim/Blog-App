@@ -1,8 +1,6 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Resource, Namespace, fields
-from Exception.exception import AuthorizationException
 from Service.LikeService import *
-from extensions import api
 
 # Namespace
 like_ns = Namespace('like', description='Handle likes on posts')
@@ -21,26 +19,6 @@ user_like_status_model = like_ns.model('UserLikeStatus', {
 like_count_model = like_ns.model('LikeCount', {
     'like_count': fields.Integer(description='Total number of likes'),
 })
-
-
-@api.errorhandler(LikeAlreadyExistsException)
-def handle_like_already_exists_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(LikeNotFoundException)
-def handle_like_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(PostNotFoundException)
-def handle_post_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(AuthorizationException)
-def handle_authorization_exception(error):
-    return {'message': error.message}, error.status_code
 
 
 # Like operations

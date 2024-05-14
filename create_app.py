@@ -8,6 +8,7 @@ from API.CommentAPI import comment_ns
 from API.LikeAPI import like_ns
 from API.CategoryAPI import category_ns
 from API.FavoriteAPI import favorite_ns
+from Exception.error_handler import error_handler
 
 
 def create_app():
@@ -26,6 +27,7 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
+    error_handler(api)
     api.init_app(app)
 
     return app

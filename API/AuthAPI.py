@@ -1,6 +1,5 @@
 from flask_restx import Resource, Namespace, fields
 from Service.AuthService import *
-from extensions import api
 
 auth_ns = Namespace('auth', description='Authentication  operations')
 
@@ -20,41 +19,6 @@ reset_password_model = auth_ns.model('UserResetPassword', {
 update_password_model = auth_ns.model('UserUpdatePassword', {
     'new_password': fields.String(required=True, description='New Password')
 })
-
-
-@api.errorhandler(UserAlreadyExistsException)
-def handle_user_already_exists_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(InvalidPasswordException)
-def handle_invalid_password_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(InvalidEmailException)
-def handle_invalid_email_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(InvalidCredentialsException)
-def handle_invalid_credentials_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(MailSendException)
-def handle_mail_send_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(TokenExpiredException)
-def handle_token_expired_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(TokenInvalidException)
-def handle_token_invalid_exception(error):
-    return {'message': error.message}, error.status_code
 
 
 # auth specific operations

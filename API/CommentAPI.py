@@ -33,21 +33,6 @@ comment_user_model = comment_ns.model('CommentUser', {
 })
 
 
-@api.errorhandler(CommentNotFoundException)
-def handle_comment_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(DatabaseOperationException)
-def handle_database_operation_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(AuthorizationException)
-def handle_authorization_exception(error):
-    return {'message': error.message}, error.status_code
-
-
 @comment_ns.route('/<int:post_id>')
 class CommentsResource(Resource):
     @comment_ns.marshal_list_with(comment_user_model)

@@ -20,26 +20,6 @@ user_favorite_status_model = favorite_ns.model('UserFavoriteStatus', {
 })
 
 
-@api.errorhandler(FavoriteNotFoundException)
-def handle_favorite_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(PostNotFoundException)
-def handle_post_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(FavoriteAlreadyExistsException)
-def handle_favorite_already_exists_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(AuthorizationException)
-def handle_authorization_exception(error):
-    return {'message': error.message}, error.status_code
-
-
 @favorite_ns.route('/user')
 class UserFavoritesResource(Resource):
 

@@ -1,7 +1,6 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Resource, Namespace, fields, reqparse
 from Service.PostService import *
-from extensions import api
 
 post_ns = Namespace('post', description='Post operations')
 
@@ -24,26 +23,6 @@ update_post_model = post_ns.model('UpdatePost', {
     'content': fields.String(required=True, description='Content'),
     'category_id': fields.Integer(required=True, description='Category ID'),
 })
-
-
-@api.errorhandler(PostNotFoundException)
-def handle_post_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(DatabaseOperationException)
-def handle_database_operation_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(CategoryNotFoundException)
-def handle_category_not_found_exception(error):
-    return {'message': error.message}, error.status_code
-
-
-@api.errorhandler(AuthorizationException)
-def handle_authorization_exception(error):
-    return {'message': error.message}, error.status_code
 
 
 # posts related operations
