@@ -1,5 +1,4 @@
 let isLiked = false;
-
 document.addEventListener('DOMContentLoaded', function () {
     const queryParams = new URLSearchParams(window.location.search);
     const postId = queryParams.get('post_id');
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     fetchPostDetails(postId);
     setupEventListeners(postId);
+    setupLikeButton(postId);
 });
 
 function setupEventListeners(postId) {
@@ -264,18 +264,6 @@ function unlikePost(postId) {
         });
 }
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    const queryParams = new URLSearchParams(window.location.search);
-    const postId = queryParams.get('post_id');
-    if (!postId) {
-        console.error('No post id provided!');
-        return;
-    }
-    fetchPostDetails(postId);
-    setupEventListeners(postId);
-    setupLikeButton(postId);
-});
 
 function fetchLikeStatus(postId) {
     const token = localStorage.getItem('token');
