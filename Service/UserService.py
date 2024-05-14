@@ -10,7 +10,6 @@ class UserDTO:
         self.join_date = user.join_date.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
-
 class UserService:
     @staticmethod
     def get_user_by_id(user_id):
@@ -22,6 +21,8 @@ class UserService:
     @staticmethod
     def get_users_by_username(username):
         user = User.query.filter(User.username == username).first()
+        if not user:
+            raise UserNotFoundException()
         return UserDTO(user)
 
     @staticmethod
