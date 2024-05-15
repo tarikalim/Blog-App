@@ -18,7 +18,7 @@ class PostDTO:
 class PostService:
     @staticmethod
     def get_all_posts():
-        results = db.session.query(Post, Category.name).join(Category).all()
+        results = db.session.query(Post, Category.name).join(Category).order_by(Post.publish_date.desc()).limit(10).all()
         posts_data = []
         for post, category_name in results:
             post_data = PostDTO(post, category_name)
