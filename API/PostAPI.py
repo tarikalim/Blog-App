@@ -21,7 +21,6 @@ create_post_model = post_ns.model('CreatePost', {
 update_post_model = post_ns.model('UpdatePost', {
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
-    'category_id': fields.Integer(required=True, description='Category ID'),
 })
 
 

@@ -1,4 +1,5 @@
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.security import generate_password_hash, check_password_hash
 from Helper.sendMail import send_email
 from Model.model import db, User
@@ -23,8 +24,12 @@ class AuthService:
             email=email,
             password=generate_password_hash(password)
         )
-        db.session.add(new_user)
-        db.session.commit()
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+        except SQLAlchemyError:
+            raise DatabaseOperationException()
         return new_user
 
     @staticmethod

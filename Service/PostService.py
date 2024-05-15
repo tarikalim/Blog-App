@@ -1,3 +1,5 @@
+from sqlalchemy.exc import SQLAlchemyError
+
 from Model.model import db, Post, Category
 from Exception.exception import *
 
@@ -75,8 +77,12 @@ class PostService:
             content=content,
             category_id=category_id
         )
-        db.session.add(new_post)
-        db.session.commit()
+        try:
+            db.session.add(new_post)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise PostCreationFailedException()
         return PostDTO(new_post, category.name)
 
     @staticmethod
@@ -92,7 +98,11 @@ class PostService:
         if content:
             post.content = content
 
-        db.session.commit()
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise PostUpdateFailedException()
         return PostDTO(post, category.name)
 
     @staticmethod
@@ -101,6 +111,10 @@ class PostService:
         if not post:
             raise PostNotFoundException()
 
-        db.session.delete(post)
-        db.session.commit()
+        try:
+            db.session.delete(post)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise PostDeletionFailedException()
         return None

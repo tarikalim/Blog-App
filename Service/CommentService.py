@@ -1,3 +1,5 @@
+from sqlalchemy.exc import SQLAlchemyError
+
 from Model.model import db, Comment, Post, User
 from Exception.exception import *
 
@@ -43,9 +45,12 @@ class CommentService:
             post_id=post_id,
             content=content
         )
-        db.session.add(new_comment)
-        db.session.commit()
-
+        try:
+            db.session.add(new_comment)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise CommentCreationFailedException()
         return CommentDTO(new_comment)
 
     @staticmethod
@@ -57,7 +62,11 @@ class CommentService:
         if content:
             comment.content = content
 
-        db.session.commit()
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise CommentUpdateFailedException()
         return CommentDTO(comment)
 
     @staticmethod
@@ -65,8 +74,12 @@ class CommentService:
         comment = Comment.query.get(comment_id)
         if not comment:
             raise CommentNotFoundException()
-        db.session.delete(comment)
-        db.session.commit()
+        try:
+            db.session.delete(comment)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise CommentDeletionFailedException()
         return None
 
     @staticmethod

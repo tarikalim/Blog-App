@@ -83,6 +83,13 @@ class CommentUpdateFailedException(ApplicationException):
         super().__init__(message, status_code=500)
 
 
+class CommentDeletionFailedException(ApplicationException):
+    """Exception raised when comment deletion fails."""
+
+    def __init__(self, message="Comment deletion failed"):
+        super().__init__(message, status_code=500)
+
+
 class InvalidPasswordException(ApplicationException):
     """Exception raised when an invalid password is provided."""
 
@@ -161,8 +168,36 @@ class FavoriteAlreadyExistsException(ApplicationException):
         super().__init__(message, status_code=400)
 
 
+class FavoriteDeletionFailedException(ApplicationException):
+    """Exception raised when favorite deletion fails."""
+
+    def __init__(self, message="Favorite deletion failed"):
+        super().__init__(message, status_code=500)
+
+
 class AuthorizationException(ApplicationException):
     """Exception raised when a user is not authorized to perform an action."""
 
     def __init__(self, message="You are not authorized to perform this action"):
         super().__init__(message, status_code=403)
+
+
+class UserUpdateFailedException(ApplicationException):
+    """Exception raised when user update fails."""
+
+    def __init__(self, message="User update failed"):
+        super().__init__(message, status_code=500)
+
+
+class UserDeletionFailedException(ApplicationException):
+    """Exception raised when user deletion fails."""
+
+    def __init__(self, message="User deletion failed"):
+        super().__init__(message, status_code=500)
+
+
+class FavoriteCreationFailedException(ApplicationException):
+    """Exception raised when favorite creation fails."""
+
+    def __init__(self, message="Favorite creation failed"):
+        super().__init__(message, status_code=500)

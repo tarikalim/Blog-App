@@ -1,4 +1,7 @@
-from Exception.exception import LikeAlreadyExistsException, PostNotFoundException, LikeNotFoundException
+from sqlalchemy.exc import SQLAlchemyError
+
+from Exception.exception import LikeAlreadyExistsException, PostNotFoundException, LikeNotFoundException, \
+    DatabaseOperationException
 from Model.model import db, Like, Post
 
 
@@ -35,8 +38,13 @@ class LikeService:
             user_id=user_id,
             post_id=post_id
         )
-        db.session.add(new_like)
-        db.session.commit()
+        try:
+            db.session.add(new_like)
+            db.session.commit()
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise DatabaseOperationException()
         return LikeDTO(new_like.user_id, new_like.post_id)
 
     @staticmethod
@@ -45,11 +53,15 @@ class LikeService:
         if not post:
             raise PostNotFoundException()
         like = Like.query.filter_by(user_id=user_id, post_id=post_id).first()
-        if like:
+        if not like:
+            raise LikeNotFoundException()
+        try:
             db.session.delete(like)
             db.session.commit()
-            return None
-        raise LikeNotFoundException()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise DatabaseOperationException()
+        return None
 
     @staticmethod
     def get_post_likes(post_id):

@@ -1,3 +1,5 @@
+from sqlalchemy.exc import SQLAlchemyError
+
 from Model.model import db, Favorite, Post
 from Exception.exception import *
 
@@ -60,19 +62,24 @@ class FavoriteService:
             user_id=user_id,
             post_id=post_id
         )
-
-        db.session.add(new_favorite)
-        db.session.commit()
-
-        return FavoritePostDTO(new_favorite, post.title, post.content)
+        try:
+            db.session.add(new_favorite)
+            db.session.commit()
+        except SQLAlchemyError:
+            raise FavoriteCreationFailedException()
+        return FavoriteDTO(new_favorite)
 
     @staticmethod
     def delete_favorite(favorite_id):
         favorite = Favorite.query.get(favorite_id)
         if not favorite:
             raise FavoriteNotFoundException()
-        db.session.delete(favorite)
-        db.session.commit()
+        try:
+            db.session.delete(favorite)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise FavoriteDeletionFailedException()
         return None
 
     @staticmethod

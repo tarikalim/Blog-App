@@ -1,3 +1,5 @@
+from sqlalchemy.exc import SQLAlchemyError
+
 from Model.model import db, User
 from Exception.exception import *
 
@@ -46,7 +48,11 @@ class UserService:
                 raise UserAlreadyExistsException("This email is already used.")
             user.email = email
 
-        db.session.commit()
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise UserUpdateFailedException()
         return UserDTO(user)
 
     @staticmethod
@@ -54,6 +60,10 @@ class UserService:
         user = User.query.get(user_id)
         if not user:
             raise UserNotFoundException()
-        db.session.delete(user)
-        db.session.commit()
+        try:
+            db.session.delete(user)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise UserDeletionFailedException()
         return None
