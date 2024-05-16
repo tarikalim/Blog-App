@@ -13,6 +13,13 @@ class UserNotFoundException(ApplicationException):
         super().__init__(message, status_code=404)
 
 
+class InvalidUsernameException(ApplicationException):
+    """Exception raised when an invalid username is provided."""
+
+    def __init__(self, message="Invalid username, username must be at least 4 characters long"):
+        super().__init__(message, status_code=400)
+
+
 class UserAlreadyExistsException(ApplicationException):
     """Exception raised when a user already exists."""
 

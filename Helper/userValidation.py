@@ -8,6 +8,12 @@ def validate_password(password):
     return False
 
 
+def validate_username(username):
+    if len(username) >= 4:
+        return True
+    return False
+
+
 def validate_mx_record(email):
     domain = email.split('@')[1]
     try:

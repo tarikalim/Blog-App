@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from Helper.sendMail import send_email
 from Model.model import db, User
 from flask_jwt_extended import create_access_token
-from Helper.userValidation import validate_password, validate_email
+from Helper.userValidation import validate_password, validate_email, validate_username
 from flask import current_app
 from Exception.exception import (
     UserAlreadyExistsException,
@@ -15,7 +15,8 @@ from Exception.exception import (
     UserNotFoundException,
     MailSendException,
     TokenExpiredException,
-    TokenInvalidException
+    TokenInvalidException,
+    InvalidUsernameException
 
 )
 
@@ -25,6 +26,8 @@ class AuthService:
     def register_user(username, email, password):
         if User.query.filter((User.username == username) | (User.email == email)).first():
             raise UserAlreadyExistsException()
+        if not validate_username(username):
+            raise InvalidUsernameException()
         if not validate_password(password):
             raise InvalidPasswordException()
         if not validate_email(email):
