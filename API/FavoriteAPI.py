@@ -1,7 +1,6 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Resource, Namespace, fields
 from Service.FavoriteService import *
-from extensions import api
 
 favorite_ns = Namespace('favorite', description='Favorite operations')
 
@@ -16,7 +15,8 @@ favorite_model = favorite_ns.model('Favorite', {
 user_favorite_status_model = favorite_ns.model('UserFavoriteStatus', {
     'user_id': fields.Integer(description='User ID of the favoriter'),
     'post_id': fields.Integer(description='Post ID'),
-    'status': fields.Boolean(description='True if user has favorited the post, False otherwise')
+    'status': fields.Boolean(description='True if user has favorite the post, False otherwise'),
+    'favorite_id': fields.Integer(description='Favorite ID', required=False)
 })
 
 

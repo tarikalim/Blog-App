@@ -21,10 +21,11 @@ class FavoritePostDTO:
 
 
 class FavoriteStatusDTO:
-    def __init__(self, user_id, post_id, status):
+    def __init__(self, user_id, post_id, status, favorite_id=None):
         self.user_id = user_id
         self.post_id = post_id
         self.status = status
+        self.favorite_id = favorite_id
 
 
 class FavoriteService:
@@ -89,5 +90,5 @@ class FavoriteService:
             raise PostNotFoundException()
         favorite = Favorite.query.filter_by(user_id=user_id, post_id=post_id).first()
         if favorite:
-            return FavoriteStatusDTO(user_id, post_id, True)
+            return FavoriteStatusDTO(user_id, post_id, True, favorite.id)
         return FavoriteStatusDTO(user_id, post_id, False)
