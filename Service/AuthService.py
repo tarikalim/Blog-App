@@ -60,7 +60,7 @@ class AuthService:
 
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         token = s.dumps(email, salt='email-confirm')
-        reset_link = f"http://localhost:5000/static/resetpassword.html?token={token}"
+        reset_link = f"{current_app.config['BASE_URL']}/static/resetpassword.html?token={token}"
         try:
             send_email(email, "Password Reset", f"Click the link to reset your password: {reset_link}")
             return "An email has been sent to your email address to reset your password. Please reset your password within 5 minutes."

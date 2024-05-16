@@ -1,5 +1,5 @@
 from flask_jwt_extended.exceptions import JWTExtendedException
-from jwt import DecodeError
+from jwt import DecodeError, ExpiredSignatureError
 from sqlalchemy.exc import SQLAlchemyError
 from Exception.exception import ApplicationException
 from flask_restx import Api
@@ -18,6 +18,7 @@ def error_handler(api: Api):
 
     @api.errorhandler(Exception)
     def handle_generic_error(error):
-        if isinstance(error, (JWTExtendedException, DecodeError, SQLAlchemyError, ApplicationException)):
+        if isinstance(error, (
+                JWTExtendedException, DecodeError, SQLAlchemyError, ApplicationException, ExpiredSignatureError)):
             raise error
         return {'message': 'An error occurred', 'details': str(error)}, 500
