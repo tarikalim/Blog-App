@@ -6,7 +6,18 @@ from Model.model import db, User
 from flask_jwt_extended import create_access_token
 from Helper.userValidation import validate_password, validate_email
 from flask import current_app
-from Exception.exception import *
+from Exception.exception import (
+    UserAlreadyExistsException,
+    InvalidPasswordException,
+    InvalidEmailException,
+    DatabaseOperationException,
+    InvalidCredentialsException,
+    UserNotFoundException,
+    MailSendException,
+    TokenExpiredException,
+    TokenInvalidException
+
+)
 
 
 class AuthService:

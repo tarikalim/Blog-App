@@ -9,21 +9,24 @@ def validate_password(password):
 
 
 def validate_mx_record(email):
-    domain = email.split('@')[-1]
+    domain = email.split('@')[1]
     try:
-        dns.resolver.resolve(domain, 'MX')
-        return True
+        mx_records = dns.resolver.resolve(domain, 'MX')
+        if mx_records:
+            return True
     except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
         return False
 
+    return False
+
 
 def validate_email(email):
-    email_regex = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
     if not re.match(email_regex, email):
-        return False, 'Invalid email format'
+        return False
 
     if not validate_mx_record(email):
-        return False, 'Email domain is not valid'
+        return False
 
-    return True, 'Email is valid'
+    return True
