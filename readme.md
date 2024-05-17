@@ -1,16 +1,18 @@
 # BlogApp
 
-This project is a attempt to develop moduler full stack web application with Python and Flask. The project is a blog
-application that allows users to create, read, update, and delete blog posts. Backend developed using RESful API principle and
+This project is a attempt to develop moduler full stack web application with Flask framework. The project is a blog
+application that allows users to create, read, update, and delete blog posts. Backend developed using RESful API
+principle and
 frontend developed using HTML, CSS, and JavaScript.
 
 ## Technologies Used
+
 Backend:
+
 - Python
 - Flask
 - SQLAlchemy
 - SQLite
-- Marshmallow
 - Flask-Mail
 - Flask-Migrate
 - Flask-RESTx
@@ -18,23 +20,27 @@ Backend:
 - Swagger UI
 
 Frontend:
+
 - HTML
 - CSS
 - JavaScript
 
 ## About the Project
-- Main objective of the project is to develop a modern backend API that securely handles user authentication and authorization for
-a blog application.
+
+- Main objective of the project is to develop a modern backend API that securely handles user authentication and
+  authorization for
+  a blog application.
 - Flask factory pattern is used to create the application instance.
-- The project is developed with a modular structure that allows for easy scaling and maintenance. 
+- The project is developed with a modular structure that allows for easy scaling and maintenance.
 - ORM (Object Relational Mapping) is used to interact with the database.
 - DTO (Data Transfer Object) pattern is used to transfer data between the frontend and backend.
-- Services are used to handle business logic and separate it from the controllers.
+- Services are used to handle business logic and separate it from the API layer.
 - API layer is used to handle requests and responses.
 - Specified exception handlers are used to handle exceptions and errors.
 - Custom decorators are used to handle user authentication and authorization.
-- JWT (JSON Web Token) is used to securely handle user authentication and authorization.
+
 ## Features
+
 - User registration and login
 - User authentication and authorization
 - Create, read, update, and delete blog posts
@@ -48,10 +54,9 @@ a blog application.
 - Simple UI for the blog application
 - Swagger UI for API documentation
 
-
 ## Step by Step Installation
 
-This project developed with
+This project developed with:
 
 ```
 Pyton 3.12.0
@@ -63,10 +68,11 @@ Clone repository with following command in your terminal:
 git clone $repository_link
 ```
 
-Create environment to run code
+Create environment and activate it:
 
 ```bash
 python3 -m venv venv
+source venv/bin/activate
 ```
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to run requirements file.
@@ -74,27 +80,42 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to run requirement
 ```bash
 pip install -r requirements.txt
 ```
-* Create a .env file in the root directory of the project and add the environment variables given in the .env.example file.
+
+* Create a .env file in the root directory of the project and add the environment variables given in the .env.example
+  file.
 
 
-* To instructor run and test the project, necessary environment variables are provided in the submission. Please use them.
+* To instructor run and test the project, necessary environment variables are provided in the submission. Please use
+  them.
 
 
 * Ensure that your code editor or IDE is set to use the Python interpreter from the virtual environment. This setting is
-usually found in the preferences or settings menu under "Python Interpreter" or similar. Choose the interpreter located
-inside your virtual environment directory.
+  usually found in the preferences or settings menu under "Python Interpreter" or similar. Choose the interpreter
+  located
+  inside your virtual environment directory.
 
 ## Usage
 
-After you set the environment variables, you can run the project with the following command:
+After you set the environment variables and install the requirements, you can run the project with the following
+command:
 
 ```bash
 python3 app.py
 ```
-* You can access the Swagger UI documentation at http://localhost:5000/ and test the API endpoints.
+
+Application will run your local server. You can access the application with the following URLs:
+
+* Swagger UI is available at http://localhost:5000/api/docs
 
 
-* You can access the blog application at http://localhost:5000/static/index.html and test the frontend.
+* Blog application is available at http://localhost:5000/
+
+## Additional Notes
+
+* To make testing process easier, example database is provided in the repository. You can use it to test the project.
+
+
+* Provided server is not suitable for production. It is only for testing purposes provided by Flask.
 
 
 
