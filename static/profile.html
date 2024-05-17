@@ -18,7 +18,6 @@
             <p><strong>Username:</strong> <span id="userName"></span></p>
             <p><strong>Email:</strong> <span id="userEmail"></span></p>
             <p><strong>Join Date:</strong> <span id="join_date"></span></p>
-
         </div>
         <button id="editProfileButton">Edit Profile</button>
     </div>
@@ -40,6 +39,20 @@
     <div id="userPosts"></div>
 </div>
 
+<!-- Update Post Modal -->
+<div id="updatePostModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Update Post</h2>
+        <form id="updatePostForm">
+            <label for="updateTitle">Title:</label>
+            <input type="text" id="updateTitle" name="updateTitle" required>
+            <label for="updateContent">Content:</label>
+            <textarea id="updateContent" name="updateContent" required></textarea>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
 
 <script src="js/profile.js"></script>
 </body>
