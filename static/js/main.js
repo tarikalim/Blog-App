@@ -60,8 +60,90 @@ function loadPosts(searchQuery = '', categoryId = '') {
         });
 }
 
-
 window.onload = function () {
     loadCategories();
     loadPosts();
+}
+
+// Modal functionality
+var modal = document.getElementById('postFormModal');
+var btn = document.getElementById('createPostButton');
+var span = document.getElementsByClassName('close')[0];
+
+btn.onclick = function () {
+    modal.style.display = 'block';
+    loadPostFormCategories();
+}
+
+span.onclick = function () {
+    modal.style.display = 'none';
+}
+
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+document.getElementById('postForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    createPost();
+});
+
+function loadPostFormCategories() {
+    fetch('/category')
+        .then(response => response.json())
+        .then(categories => {
+            const categorySelect = document.getElementById('category');
+            categorySelect.innerHTML = '<option value="">Select a category</option>';
+            categories.forEach(category => {
+                categorySelect.innerHTML += `<option value="${category.id}">${category.name}</option>`;
+            });
+        })
+        .catch(error => console.error('Error fetching categories:', error));
+}
+
+function createPost() {
+    const title = document.getElementById('title').value;
+    const category = document.getElementById('category').value;
+    const content = document.getElementById('content').value;
+
+    const payload = {
+        title: title,
+        category_id: parseInt(category),
+        content: content
+    };
+
+    const token = localStorage.getItem('token');
+
+    fetch('/post', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Post created:', data);
+            modal.style.display = 'none';
+            addPostToMainContent(data);
+        })
+        .catch(error => {
+            console.error('Error creating post:', error);
+            alert('Failed to create post. Please try again.');
+        });
+}
+
+function addPostToMainContent(post) {
+    const postsDiv = document.getElementById('posts');
+    const postDiv = document.createElement('div');
+    postDiv.classList.add('post');
+    postDiv.innerHTML = `
+        <h2>${post.title}</h2>
+        <p>Category: ${post.category_name}</p>
+        <p>${post.content}</p>
+    `;
+    postsDiv.appendChild(postDiv);
 }
