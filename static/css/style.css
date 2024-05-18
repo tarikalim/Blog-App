@@ -187,6 +187,7 @@ button:hover {
 #likedPostsList li {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
+    display: flex;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
