@@ -46,11 +46,12 @@ Frontend:
 - Create, read, update, and delete blog posts
 - Create, read, update, and delete comments on blog posts
 - Favorite blog posts and view favorite blog posts
-- Like blog posts and view liked blog posts
+- Like blog posts and view total likes
+- See the latest liked blog posts
 - Search blog posts by title and category
 - User profile management
 - User password reset and email verification
-- 28 different endpoints for the API
+- 30 different endpoints for the API
 - Simple UI for the blog application
 - Swagger UI for API documentation
 
@@ -105,10 +106,10 @@ python3 app.py
 
 Application will run your local server. You can access the application with the following URLs:
 
-* Swagger UI is available at http://localhost:5000/api/docs
+* Swagger UI is available at http://localhost:5000
 
 
-* Blog application is available at http://localhost:5000/
+* Blog application is available at http://localhost:5000/static/index.html
 
 ## Additional Notes
 
