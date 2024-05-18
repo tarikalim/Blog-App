@@ -1,7 +1,7 @@
 let isLiked = false;
 let isFavorite = false;
 let favoriteId = null;
-
+// Event listener for when the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', function () {
     const queryParams = new URLSearchParams(window.location.search);
     const postId = queryParams.get('post_id');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupLikeButton(postId);
     setupFavoriteButton(postId);
 });
-
+// Function to set up event listeners for various interactive elements
 function setupEventListeners(postId) {
     const commentButton = document.getElementById('commentButton');
     commentButton.addEventListener('click', () => {
@@ -53,7 +53,7 @@ function setupEventListeners(postId) {
         }
     });
 }
-
+// Function to fetch and display the details of the post
 function fetchPostDetails(postId) {
     fetch(`/post/${postId}`, { method: 'GET' })
         .then(response => response.json())
@@ -71,7 +71,7 @@ function fetchPostDetails(postId) {
         })
         .catch(error => console.error('Error fetching post details:', error));
 }
-
+// Function to fetch and display the like count for the post
 function updateLikes(postId) {
     const token = localStorage.getItem('token');
     fetch(`/like/${postId}`, {
@@ -94,7 +94,7 @@ function updateLikes(postId) {
             console.error('Error fetching like count:', error);
         });
 }
-
+// Function to fetch and display comments for the post
 function updateComments(postId) {
     fetch(`/comment/${postId}`, { method: 'GET' })
         .then(response => response.json())
@@ -145,7 +145,7 @@ function updateComments(postId) {
         })
         .catch(error => console.error('Error updating comments:', error));
 }
-
+// Function to post a new comment to the server
 function postComment(postId, content) {
     const token = localStorage.getItem('token');
     fetch(`/comment/${postId}`, {
@@ -171,7 +171,7 @@ function postComment(postId, content) {
             alert('Failed to post comment. Please try again.');
         });
 }
-
+// Function to delete a comment from the server
 function deleteComment(commentId, postId) {
     const token = localStorage.getItem('token');
     fetch(`/comment/${commentId}`, {
@@ -191,14 +191,14 @@ function deleteComment(commentId, postId) {
             alert(error.message);
         });
 }
-
+// Function to set up the like button with the current like status
 function setupLikeButton(postId) {
     fetchLikeStatus(postId).then(likedStatus => {
         isLiked = likedStatus;
         updateLikeButton(postId);
     });
 }
-
+// Function to update the like button text and functionality
 function updateLikeButton(postId) {
     const likeButton = document.getElementById('likeButton');
 
@@ -216,7 +216,7 @@ function updateLikeButton(postId) {
         likeButton.textContent = 'Like Post';
     }
 }
-
+// Function to like the post on the server
 function likePost(postId) {
     const token = localStorage.getItem('token');
     fetch(`/like/${postId}`, {
@@ -238,7 +238,7 @@ function likePost(postId) {
             alert('Failed to like post. Please try again.');
         });
 }
-
+// Function to unlike the post on the server
 function unlikePost(postId) {
     const token = localStorage.getItem('token');
     fetch(`/like/${postId}`, {
@@ -260,7 +260,7 @@ function unlikePost(postId) {
             alert('Failed to unlike post. Please try again.');
         });
 }
-
+// Function to fetch the current like status for the post
 function fetchLikeStatus(postId) {
     const token = localStorage.getItem('token');
     return fetch(`/like/status/${postId}`, {
@@ -282,7 +282,7 @@ function fetchLikeStatus(postId) {
             console.error('Error fetching like status:', error);
         });
 }
-
+// Function to set up the favorite button with the current favorite status
 function setupFavoriteButton(postId) {
     fetchFavoriteStatus(postId).then(favoriteStatus => {
         isFavorite = favoriteStatus.status;
@@ -290,7 +290,7 @@ function setupFavoriteButton(postId) {
         updateFavoriteButton();
     });
 }
-
+// Function to update the favorite button text and functionality
 function updateFavoriteButton() {
     const favoriteButton = document.getElementById('favoriteButton');
 
@@ -311,7 +311,7 @@ function updateFavoriteButton() {
         favoriteButton.textContent = 'Favorite Post';
     }
 }
-
+// Function to favorite the post on the server
 function favoritePost(postId) {
     const token = localStorage.getItem('token');
     fetch(`/favorite/${postId}`, {
@@ -336,7 +336,7 @@ function favoritePost(postId) {
             alert('Failed to favorite post. Please try again.');
         });
 }
-
+// Function to unfavorite the post on the server
 function unfavoritePost(postId) {
     const token = localStorage.getItem('token');
     fetch(`/favorite/${favoriteId}`, {
@@ -358,7 +358,7 @@ function unfavoritePost(postId) {
             alert('Failed to unfavorite post. Please try again.');
         });
 }
-
+// Function to fetch the current favorite status for the post
 function fetchFavoriteStatus(postId) {
     const token = localStorage.getItem('token');
     return fetch(`/favorite/status/${postId}`, {
