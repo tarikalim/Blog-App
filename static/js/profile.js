@@ -6,25 +6,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    // Profil bilgilerini yükle
     getUserProfile(token);
-    // Kullanıcının kendi yazdığı postları yükle
     getUserPosts(token);
-    // Kullanıcının beğendiği postları yükle
     fetchLikedPosts(token);
 
-    // Profil düzenleme butonuna tıklama olayı
     document.getElementById('editProfileButton').addEventListener('click', function () {
         document.getElementById('updateProfileForm').style.display = 'block';
     });
 
-    // Profil güncelleme formunu gönderme
     document.getElementById('profileForm').addEventListener('submit', function (e) {
         e.preventDefault();
         updateUserProfile(token);
     });
 
-    // Profil düzenleme formunu kapatma butonuna tıklama olayı
     document.querySelector('button[type="button"]').addEventListener('click', function () {
         document.getElementById('updateProfileForm').style.display = 'none';
     });
@@ -49,12 +43,12 @@ function getUserProfile(token) {
             'Authorization': `Bearer ${token}`
         }
     })
-        .then(response => {
+        .then(response => response.json().then(data => {
             if (!response.ok) {
-                throw new Error('No Profile.');
+                throw new Error(data.message || 'No Profile.');
             }
-            return response.json();
-        })
+            return data;
+        }))
         .then(user => {
             document.getElementById('userName').textContent = user.username;
             document.getElementById('userEmail').textContent = user.email;
@@ -67,6 +61,7 @@ function getUserProfile(token) {
         })
         .catch(error => {
             console.error('Error:', error);
+            alert(error.message);
         });
 }
 
@@ -77,12 +72,12 @@ function getUserPosts(token) {
             'Authorization': `Bearer ${token}`
         }
     })
-        .then(response => {
+        .then(response => response.json().then(data => {
             if (!response.ok) {
-                throw new Error('Failed to fetch posts');
+                throw new Error(data.message || 'Failed to fetch posts');
             }
-            return response.json();
-        })
+            return data;
+        }))
         .then(posts => {
             const postsContainer = document.getElementById('userPosts');
             postsContainer.innerHTML = '';
@@ -141,12 +136,12 @@ function updateUserProfile(token) {
         },
         body: JSON.stringify({username, email})
     })
-        .then(response => {
+        .then(response => response.json().then(data => {
             if (!response.ok) {
-                throw new Error('Failed to update profile');
+                throw new Error(data.message || 'Failed to update profile');
             }
-            return response.json();
-        })
+            return data;
+        }))
         .then(updatedUser => {
             document.getElementById('userName').textContent = updatedUser.username;
             document.getElementById('userEmail').textContent = updatedUser.email;
@@ -183,12 +178,12 @@ function updatePost(postId, title, content) {
         },
         body: JSON.stringify({title, content})
     })
-        .then(response => {
+        .then(response => response.json().then(data => {
             if (!response.ok) {
-                throw new Error('Failed to update post');
+                throw new Error(data.message || 'Failed to update post');
             }
-            return response.json();
-        })
+            return data;
+        }))
         .then(updatedPost => {
             alert('Post updated successfully!');
             getUserPosts(localStorage.getItem('token'));
@@ -208,10 +203,13 @@ function deletePost(postId) {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then(response => {
+            .then(response => response.json().then(data => {
                 if (!response.ok) {
-                    throw new Error('Failed to delete post');
+                    throw new Error(data.message || 'Failed to delete post');
                 }
+                return data;
+            }))
+            .then(() => {
                 alert('Post deleted successfully!');
                 getUserPosts(localStorage.getItem('token'));
             })
@@ -229,7 +227,12 @@ function fetchLikedPosts(token) {
             'Authorization': `Bearer ${token}`
         }
     })
-        .then(response => response.json())
+        .then(response => response.json().then(data => {
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to load liked posts');
+            }
+            return data;
+        }))
         .then(data => {
             const likedPostsList = document.getElementById('likedPostsList');
             likedPostsList.innerHTML = '';

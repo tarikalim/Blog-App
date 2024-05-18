@@ -258,6 +258,14 @@ button:hover {
     z-index: 10;
     display: none;
 }
+.profile-page #updateProfileForm label,
+.profile-page #updateProfileForm input,
+.profile-page #updateProfileForm button,
+.profile-page #updateProfileForm textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+}
 
 .post-detail-container {
     width: 80%;

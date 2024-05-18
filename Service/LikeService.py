@@ -89,6 +89,6 @@ class LikeService:
 
     @staticmethod
     def get_user_liked_posts(user_id):
-        results = db.session.query(Post).join(Like, Post.id == Like.post_id).filter(Like.user_id == user_id).limit(5).all()
+        results = db.session.query(Post).join(Like, Post.id == Like.post_id).filter(Like.user_id == user_id).order_by(Like.id.desc()).limit(5).all()
         posts_data = [UserLikedPostDTO(post.id, post.title) for post in results]
         return posts_data
