@@ -6,22 +6,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="form-container">
-        <div class="form-box">
-            <h1>Welcome to Blog App</h1>
-            <div class="button-container">
-                <button onclick="location.href='login.html'">Login</button>
-                <button onclick="location.href='register.html'">Register</button>
-                <button id="forgot-password-btn" onclick="toggleForgotPasswordForm()">Forgot Password</button>
-            </div>
+<div class="form-container">
+    <div class="form-box">
+        <h1>Welcome to Blog App</h1>
+        <div class="button-container">
+            <button onclick="location.href='login.html'">Login</button>
+            <button onclick="location.href='register.html'">Register</button>
+            <button id="forgot-password-btn" onclick="toggleForgotPasswordForm()">Forgot Password</button>
+            <button onclick="window.location.href='main.html'">Go Main Page</button>
 
-            <div id="forgot-password-form" style="display:none;">
-                <input type="email" id="reset-email" placeholder="Enter your email">
-                <button onclick="sendResetLink()">Send Reset Link</button>
-            </div>
+        </div>
+
+        <div id="forgot-password-form" style="display:none;">
+            <input type="email" id="reset-email" placeholder="Enter your email">
+            <button onclick="sendResetLink()">Send Reset Link</button>
+
         </div>
     </div>
+</div>
 
-    <script src="js/auth.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
