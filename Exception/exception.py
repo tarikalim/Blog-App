@@ -215,3 +215,11 @@ class InvalidInputException(ApplicationException):
 
     def __init__(self, message="Invalid input"):
         super().__init__(message, status_code=400)
+
+
+class EnumerateEmailException(ApplicationException):
+    """Exception raised when an email enumeration is attempted."""
+
+    def __init__(self,
+                 message="An email has been sent to your email address to reset your password. Please reset your password within 5 minutes."):
+        super().__init__(message, status_code=404)

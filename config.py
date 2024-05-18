@@ -13,5 +13,4 @@ class Config:
     MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=int(os.getenv("JWT_ACCESS_TOKEN_EXPIRES")))
     BASE_URL = os.getenv("BASE_URL")
-
-
+    ERROR_404_HELP = False

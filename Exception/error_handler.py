@@ -9,7 +9,8 @@ from extensions import db
 def error_handler(api: Api):
     @api.errorhandler(ApplicationException)
     def handle_application_exception(error):
-        return {'message': error.message}, error.status_code
+        response = {'message': error.message}
+        return response, error.status_code
 
     @api.errorhandler(SQLAlchemyError)
     def handle_database_error(error):

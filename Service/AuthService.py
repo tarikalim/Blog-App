@@ -16,7 +16,8 @@ from Exception.exception import (
     MailSendException,
     TokenExpiredException,
     TokenInvalidException,
-    InvalidUsernameException
+    InvalidUsernameException,
+    EnumerateEmailException
 
 )
 
@@ -59,7 +60,7 @@ class AuthService:
     def reset_password_request(email):
         user = User.query.filter_by(email=email).first()
         if not user:
-            raise UserNotFoundException()
+            raise EnumerateEmailException()
 
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         token = s.dumps(email, salt='email-confirm')
