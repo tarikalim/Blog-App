@@ -6,33 +6,40 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    // Profil bilgilerini yükle
     getUserProfile(token);
+    // Kullanıcının kendi yazdığı postları yükle
     getUserPosts(token);
+    // Kullanıcının beğendiği postları yükle
+    fetchLikedPosts(token);
 
+    // Profil düzenleme butonuna tıklama olayı
     document.getElementById('editProfileButton').addEventListener('click', function () {
         document.getElementById('updateProfileForm').style.display = 'block';
     });
 
+    // Profil güncelleme formunu gönderme
     document.getElementById('profileForm').addEventListener('submit', function (e) {
         e.preventDefault();
         updateUserProfile(token);
     });
 
+    // Profil düzenleme formunu kapatma butonuna tıklama olayı
     document.querySelector('button[type="button"]').addEventListener('click', function () {
         document.getElementById('updateProfileForm').style.display = 'none';
     });
 
-    // Modal close functionality
+    // Modal kapatma işlevi
     var updatePostModal = document.getElementById('updatePostModal');
     var span = document.getElementsByClassName('close')[0];
     span.onclick = function () {
         updatePostModal.style.display = 'none';
-    }
+    };
     window.onclick = function (event) {
         if (event.target === updatePostModal) {
             updatePostModal.style.display = 'none';
         }
-    }
+    };
 });
 
 function getUserProfile(token) {
@@ -213,4 +220,31 @@ function deletePost(postId) {
                 alert(error.message);
             });
     }
+}
+
+function fetchLikedPosts(token) {
+    fetch('/like/user', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const likedPostsList = document.getElementById('likedPostsList');
+            likedPostsList.innerHTML = '';
+
+            data.forEach(post => {
+                const postItem = document.createElement('li');
+                postItem.textContent = post.title;
+                postItem.addEventListener('click', function () {
+                    window.location.href = `/static/post_detail.html?post_id=${post.post_id}`;
+                });
+                likedPostsList.appendChild(postItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching liked posts:', error);
+            alert('Failed to load liked posts. Please try again.');
+        });
 }

@@ -23,6 +23,12 @@ class UserLikeStatusDTO:
         self.status = status
 
 
+class UserLikedPostDTO:
+    def __init__(self, post_id, title):
+        self.post_id = post_id
+        self.title = title
+
+
 class LikeService:
 
     @staticmethod
@@ -80,3 +86,9 @@ class LikeService:
         if like:
             return UserLikeStatusDTO(like.user_id, like.post_id, True)
         return UserLikeStatusDTO(user_id, post_id, False)
+
+    @staticmethod
+    def get_user_liked_posts(user_id):
+        results = db.session.query(Post).join(Like, Post.id == Like.post_id).filter(Like.user_id == user_id).all()
+        posts_data = [UserLikedPostDTO(post.id, post.title) for post in results]
+        return posts_data
