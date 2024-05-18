@@ -45,6 +45,8 @@ button {
     font-size: 16px;
     margin-top: 10px;
     width: 100%;
+    transition: background-color 0.35s ease-out;
+
 }
 
 button:hover {
@@ -68,6 +70,8 @@ button:hover {
     align-items: center;
     width: 30%;
     margin-top: 20px;
+    transition: background-color 0.35s ease-out;
+
 }
 
 .main-header .search-category-container {
@@ -138,8 +142,8 @@ button:hover {
     align-items: center;
     width: 100%;
     padding: 20px;
-    background-color: #fff;
     border-bottom: 1px solid #ccc;
+
 }
 
 .profile-page .profile-details {
@@ -175,6 +179,8 @@ button:hover {
 
 .profile-page header button {
     margin-right: 10px;
+    transition: background-color 0.35s ease-out;
+
 }
 
 .profile-page #updateProfileForm {
@@ -196,9 +202,9 @@ button:hover {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+
 }
 
 .post-details {
@@ -218,6 +224,8 @@ button:hover {
 
 .like-section button {
     width: 300px;
+    transition: background-color 0.35s ease-out;
+
 }
 
 .like-section span {
@@ -232,6 +240,8 @@ button:hover {
 
 .comments-section button {
     width: 150px;
+    transition: background-color 0.35s ease-out;
+
 }
 
 .comments-section h3 {
@@ -317,14 +327,6 @@ button:hover {
     flex-grow: 1;
 }
 
-textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-    box-sizing: border-box;
-}
 
 .navigation {
     display: flex;
@@ -342,6 +344,8 @@ textarea {
     cursor: pointer;
     font-size: 16px;
     color: #333;
+    transition: background-color 0.35s ease-out;
+
 }
 
 .navigation button:hover {
@@ -390,7 +394,6 @@ textarea {
     width: 70%;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     text-align: left;
@@ -399,6 +402,7 @@ textarea {
 .favorite-post h2 {
     margin: 0 0 10px;
 }
+
 .favorites-container {
     text-align: center;
     padding: 20px;
@@ -415,6 +419,7 @@ textarea {
     margin: 5px;
     width: auto;
     display: inline-block;
+    transition: background-color 0.35s ease-out;
 }
 
 .favorite-post button:hover {

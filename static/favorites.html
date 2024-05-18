@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) {
                 throw new Error('Failed to remove favorite');
             }
-            fetchFavorites(); // Refresh the favorites list after removing
+            fetchFavorites();
         })
         .catch(error => {
             console.error('Error removing favorite:', error);

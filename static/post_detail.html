@@ -16,22 +16,35 @@
         <p id="publishDate"></p>
         <span id="categoryName"></span>
         <p id="postContent"></p>
-
     </div>
     <div class="like-section">
         <span id="likeCount">0</span>
         <button id="likeButton">Like/Unlike This Post</button>
         <button id="favoriteButton"></button>
-
     </div>
     <div class="comments-section">
-        <label for="commentInput"></label><textarea id="commentInput"
-                                                    placeholder="Write your comment here about this post..."></textarea>
+        <label for="commentInput"></label>
+        <textarea id="commentInput" placeholder="Write your comment here about this post..."></textarea>
         <button id="commentButton">Post Comment</button>
         <h3>Comments</h3>
         <ul id="commentList"></ul>
     </div>
 </div>
+
+<div id="updateCommentModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Update Comment</h2>
+        <form id="updateCommentForm">
+            <input type="hidden" id="updateCommentId">
+            <textarea class="input-field" id="updateCommentContent" placeholder="Update your comment"
+                      required></textarea>
+            <br>
+            <button class="button" type="submit">Update Comment</button>
+        </form>
+    </div>
+</div>
+
 <script src="js/post_detail.js"></script>
 </body>
 </html>
