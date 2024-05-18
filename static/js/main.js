@@ -142,17 +142,25 @@ function createPost() {
         },
         body: JSON.stringify(payload)
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Post created:', data);
-            modal.style.display = 'none';
-            addPostToMainContent(data);
-        })
-        .catch(error => {
-            console.error('Error creating post:', error);
-            alert('Failed to create post. Please try again.');
-        });
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => {
+                throw new Error(errorData.message || 'Failed to create post.');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Post created:', data);
+        modal.style.display = 'none';
+        addPostToMainContent(data);
+    })
+    .catch(error => {
+        console.error('Error creating post:', error);
+        alert(error.message);
+    });
 }
+
 
 function addPostToMainContent(post) {
     const postsDiv = document.getElementById('posts');

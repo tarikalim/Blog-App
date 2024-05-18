@@ -13,11 +13,13 @@ post_model = post_ns.model('Post', {
     'category_id': fields.Integer(required=True, description='Category ID'),
     'category_name': fields.String(description='Category Name'),
 })
+
 create_post_model = post_ns.model('CreatePost', {
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
     'category_id': fields.Integer(required=True, description='Category ID'),
 })
+
 update_post_model = post_ns.model('UpdatePost', {
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
@@ -49,6 +51,8 @@ class PostsResource(Resource):
         """Create a new post. User must be logged in."""
         current_user_id = get_jwt_identity()
         data = post_ns.payload
+        if len(post_ns.payload['title']) > 50:
+            raise InvalidInputException('Title must be less than 50 characters')
         return PostService.create_post(user_id=current_user_id, title=data['title'], content=data['content'],
                                        category_id=data['category_id'])
 
@@ -73,8 +77,9 @@ class PostResource(Resource):
         post = PostService.get_post_by_id(post_id)
         if post.user_id != current_user_id:
             raise AuthorizationException('You can only update your own posts')
-
         data = post_ns.payload
+        if len(post_ns.payload['title']) > 50:
+            raise InvalidInputException('Title must be less than 50 characters')
         return PostService.update_post(post_id, title=data['title'], content=data['content'])
 
     @jwt_required()

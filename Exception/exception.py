@@ -208,3 +208,10 @@ class FavoriteCreationFailedException(ApplicationException):
 
     def __init__(self, message="Favorite creation failed"):
         super().__init__(message, status_code=500)
+
+
+class InvalidInputException(ApplicationException):
+    """Exception raised when an invalid input is provided."""
+
+    def __init__(self, message="Invalid input"):
+        super().__init__(message, status_code=400)
