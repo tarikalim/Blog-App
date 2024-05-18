@@ -4,14 +4,17 @@ document.getElementById('profileButton').addEventListener('click', function () {
 
 document.getElementById('searchButton').addEventListener('click', function () {
     var searchQuery = document.getElementById('searchInput').value;
-    var selectedCategory = document.getElementById('categorySelect').value;
-    loadPosts(searchQuery, selectedCategory);
+    searchPosts(searchQuery);
 });
 
 document.getElementById('categorySelect').addEventListener('change', function () {
-    var searchQuery = document.getElementById('searchInput').value;
     var selectedCategory = document.getElementById('categorySelect').value;
-    loadPosts(searchQuery, selectedCategory);
+    if (selectedCategory) {
+        loadPostsByCategory(selectedCategory);
+    } else {
+
+        loadPosts();
+    }
 });
 
 function loadCategories() {
@@ -26,19 +29,34 @@ function loadCategories() {
         });
 }
 
-function loadPosts(searchQuery = '', categoryId = '') {
+function searchPosts(searchQuery = '') {
     let url = '/post/search';
-    let params = [];
-
     if (searchQuery) {
-        params.push(`title=${encodeURIComponent(searchQuery)}`);
+        url += `?title=${encodeURIComponent(searchQuery)}`;
     }
-    if (categoryId) {
-        params.push(`category_id=${encodeURIComponent(categoryId)}`);
-    }
-    if (params.length > 0) {
-        url += '?' + params.join('&');
-    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(posts => {
+            const postsContainer = document.getElementById('posts');
+            postsContainer.innerHTML = '';
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.innerHTML = `<h2>${post.title}</h2><p>Category: ${post.category_name}</p><p>${post.content}</p>`;
+                postElement.addEventListener('click', function () {
+                    window.location.href = `/static/post_detail.html?post_id=${post.id}`;
+                });
+                postsContainer.appendChild(postElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load posts. Please try again.');
+        });
+}
+
+function loadPostsByCategory(categoryId) {
+    let url = `/post/category/${encodeURIComponent(categoryId)}`;
 
     fetch(url)
         .then(response => response.json())
@@ -62,7 +80,7 @@ function loadPosts(searchQuery = '', categoryId = '') {
 
 window.onload = function () {
     loadCategories();
-    loadPosts();
+    searchPosts();
 }
 
 // Modal functionality
