@@ -12,9 +12,13 @@ document.getElementById('categorySelect').addEventListener('change', function ()
     if (selectedCategory) {
         loadPostsByCategory(selectedCategory);
     } else {
-
         loadPosts();
     }
+});
+
+document.getElementById('searchUserButton').addEventListener('click', function () {
+    var username = document.getElementById('usernameInput').value;
+    searchUsers(username);
 });
 
 function loadCategories() {
@@ -75,6 +79,36 @@ function loadPostsByCategory(categoryId) {
         .catch(error => {
             console.error('Error:', error);
             alert('Failed to load posts. Please try again.');
+        });
+}
+
+function searchUsers(username) {
+    if (!username) {
+        alert('Please enter a username');
+        return;
+    }
+
+    fetch(`/user/search?username=${encodeURIComponent(username)}`)
+        .then(response => response.json())
+        .then(users => {
+            const userResults = document.getElementById('userResults');
+            userResults.innerHTML = '';
+            if (users.length > 0) {
+                users.forEach(user => {
+                    const userElement = document.createElement('a');
+                    userElement.href = `/static/user_posts.html?user_id=${user.id}`;
+                    userElement.textContent = `${user.username} (${user.email})`;
+                    userResults.appendChild(userElement);
+                });
+                userResults.classList.add('show');
+            } else {
+                userResults.innerHTML = '<p>No users found</p>';
+                userResults.classList.add('show');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load users. Please try again.');
         });
 }
 

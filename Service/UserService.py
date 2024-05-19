@@ -22,10 +22,12 @@ class UserService:
 
     @staticmethod
     def get_users_by_username(username):
-        user = User.query.filter(User.username == username).first()
-        if not user:
-            raise UserNotFoundException()
-        return UserDTO(user)
+        user = User.query.filter(User.username.like(f'%{username}%')).all()
+        users_data = []
+        for user in user:
+            user_data = UserDTO(user)
+            users_data.append(user_data)
+        return users_data
 
     @staticmethod
     def get_all_users():
