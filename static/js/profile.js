@@ -203,13 +203,12 @@ function deletePost(postId) {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then(response => response.json().then(data => {
+            .then(response => {
                 if (!response.ok) {
-                    throw new Error(data.message || 'Failed to delete post');
+                    return response.text().then(errorMessage => {
+                        throw new Error(errorMessage || 'Failed to delete post');
+                    });
                 }
-                return data;
-            }))
-            .then(() => {
                 alert('Post deleted successfully!');
                 getUserPosts(localStorage.getItem('token'));
             })
@@ -219,6 +218,7 @@ function deletePost(postId) {
             });
     }
 }
+
 
 function fetchLikedPosts(token) {
     fetch('/like/user', {
