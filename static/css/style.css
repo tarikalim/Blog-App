@@ -359,6 +359,7 @@ button:hover {
 
 }
 
+.post-details span,
 .like-section span {
     background-color: #ccc;
     padding: 4px 8px;
