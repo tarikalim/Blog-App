@@ -42,15 +42,16 @@ Frontend:
 ## Features
 
 - User registration and login
-- User authentication and authorization
+- User authentication and authorization with JWT
 - Create, read, update, and delete blog posts
 - Create, read, update, and delete comments on blog posts
 - Favorite blog posts and view favorite blog posts
 - Like blog posts and view total likes
 - See the latest liked blog posts
 - Search blog posts by title and category
+- Search users by username and view their posts
 - User profile management
-- User password reset and email verification
+- User password reset and email verification with Flask-Mail
 - 30 different endpoints for the API
 - Simple UI for the blog application
 - Swagger UI for API documentation
@@ -106,10 +107,10 @@ python3 app.py
 
 Application will run your local server. You can access the application with the following URLs:
 
-* Swagger UI is available at http://localhost:5000
+* Swagger UI is available at: http://localhost:5000
 
 
-* Blog application is available at http://localhost:5000/static/index.html
+* Blog application is available at: http://localhost:5000/static/index.html
 
 ## Additional Notes
 
