@@ -55,4 +55,8 @@ class UserSearch(Resource):
         """Search users by username"""
         args = parser.parse_args()
         username = args.get('username')
-        return UserService.get_users_by_username(username)
+        if username:
+            users = UserService.get_users_by_username(username)
+        else:
+            users = UserService.get_all_users()
+        return users

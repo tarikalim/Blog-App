@@ -58,18 +58,84 @@ button:hover {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 20px 0;
+    height: 7em;
+    justify-content: center;
     background-color: #ffffff;
     border-bottom: 1px solid #ccc;
+    position: fixed;
 }
 
-.main-header .search-category-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    width: 30%;
+.main-header .navbar {
+    display:flex;
     gap: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.main-header .navbar .search-category-container,
+.main-header .navbar .create-button-container,
+.main-header .navbar .profile-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.main-header .navbar .search-category-container {
+    position: absolute;
+    left: 1em;
+    z-index: 500;
+}
+
+.main-header .navbar .profile-container {
+    position: absolute;
+    right: 1em;
+    z-index: 500;
+}
+
+.main-header .navbar .create-button-container {
+    position: absolute;
+    width: 100%;
+    justify-content: center;
+    z-index: 400;
+}
+
+.main-header .navbar .search-category-container {
+    position: relative;
+    justify-self: center;
+}
+
+
+.main-header .navbar .search-category-container input {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: 8vw !important;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .search-category-container select {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: 6vw !important;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .search-category-container button {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: fit-content !important;
+}
+
+.main-header .navbar .create-button-container button {
+    height: 3em;
+    margin: 0 !important;
+    width: fit-content;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .profile-container button {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: fit-content;
 }
 
 .main-header #logo {
@@ -80,7 +146,7 @@ button:hover {
 .main-header #searchInput {
     flex-grow: 1;
     margin-right: 10px;
-    width: 120px;
+    width:120px;
 }
 
 .main-header #categorySelect {
@@ -96,7 +162,7 @@ button:hover {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 20px;
+    padding-top: 7em;
 }
 
 .main-header #posts {
@@ -253,7 +319,6 @@ button:hover {
     z-index: 10;
     display: none;
 }
-
 .profile-page #updateProfileForm label,
 .profile-page #updateProfileForm input,
 .profile-page #updateProfileForm button,
@@ -294,6 +359,7 @@ button:hover {
 
 }
 
+.post-details span,
 .like-section span {
     background-color: #ccc;
     padding: 4px 8px;
@@ -501,49 +567,3 @@ button:hover {
     margin-right: 10px;
 }
 
-/* Existing CSS code... */
-
-.search-user-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    width: 30%;
-    gap: 10px;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-.show {
-    display: block;
-}
