@@ -1,19 +1,67 @@
-document.getElementById('profileButton').addEventListener('click', function () {
-    window.location.href = 'profile.html';
-});
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('profileButton').addEventListener('click', function () {
+        window.location.href = 'profile.html';
+    });
 
-document.getElementById('searchButton').addEventListener('click', function () {
-    var searchQuery = document.getElementById('searchInput').value;
-    searchPosts(searchQuery);
-});
+    document.getElementById('searchButton').addEventListener('click', function () {
+        var searchQuery = document.getElementById('searchInput').value;
+        searchPosts(searchQuery);
+    });
 
-document.getElementById('categorySelect').addEventListener('change', function () {
-    var selectedCategory = document.getElementById('categorySelect').value;
-    if (selectedCategory) {
-        loadPostsByCategory(selectedCategory);
-    } else {
+    document.getElementById('categorySelect').addEventListener('change', function () {
+        var selectedCategory = document.getElementById('categorySelect').value;
+        if (selectedCategory) {
+            loadPostsByCategory(selectedCategory);
+        } else {
+            loadPosts();
+        }
+    });
 
-        loadPosts();
+    document.getElementById('searchUserButton').addEventListener('click', function () {
+        var username = document.getElementById('usernameInput').value;
+        searchUsers(username);
+    });
+
+    loadCategories();
+    searchPosts();
+
+    // Modal functionality
+    var postFormModal = document.getElementById('postFormModal');
+    var btn = document.getElementById('createPostButton');
+    var span = document.getElementsByClassName('close')[0];
+
+    btn.onclick = function () {
+        postFormModal.style.display = 'block';
+        loadPostFormCategories();
+    }
+
+    span.onclick = function () {
+        postFormModal.style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        if (event.target == postFormModal) {
+            postFormModal.style.display = 'none';
+        }
+    }
+
+    document.getElementById('postForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        createPost();
+    });
+
+    // User search modal functionality
+    var userSearchModal = document.getElementById('userSearchModal');
+    var closeUserSearchModal = document.getElementById('closeUserSearchModal');
+
+    closeUserSearchModal.onclick = function () {
+        userSearchModal.style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        if (event.target == userSearchModal) {
+            userSearchModal.style.display = 'none';
+        }
     }
 });
 
@@ -78,35 +126,38 @@ function loadPostsByCategory(categoryId) {
         });
 }
 
-window.onload = function () {
-    loadCategories();
-    searchPosts();
-}
-
-// Modal functionality
-var modal = document.getElementById('postFormModal');
-var btn = document.getElementById('createPostButton');
-var span = document.getElementsByClassName('close')[0];
-
-btn.onclick = function () {
-    modal.style.display = 'block';
-    loadPostFormCategories();
-}
-
-span.onclick = function () {
-    modal.style.display = 'none';
-}
-
-window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = 'none';
+function searchUsers(username) {
+    if (!username) {
+        alert('Please enter a username');
+        return;
     }
+
+    fetch(`/user/search?username=${encodeURIComponent(username)}`)
+        .then(response => response.json())
+        .then(users => {
+            const userResults = document.getElementById('userResults');
+            userResults.innerHTML = '';
+            if (users.length > 0) {
+                users.forEach(user => {
+                    const userElement = document.createElement('a');
+                    userElement.href = `/static/user_posts.html?user_id=${user.id}&username=${encodeURIComponent(user.username)}`;
+                    userElement.textContent = `${user.username} `;
+                    userElement.classList.add('user-results');
+                    userResults.appendChild(userElement);
+                });
+                userResults.classList.add('show');
+            } else {
+                userResults.innerHTML = '<p>No users found</p>';
+                userResults.classList.add('show');
+            }
+            document.getElementById('userSearchModal').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load users. Please try again.');
+        });
 }
 
-document.getElementById('postForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    createPost();
-});
 
 function loadPostFormCategories() {
     fetch('/category')
@@ -152,7 +203,7 @@ function createPost() {
     })
     .then(data => {
         console.log('Post created:', data);
-        modal.style.display = 'none';
+        postFormModal.style.display = 'none';
         addPostToMainContent(data);
     })
     .catch(error => {
@@ -160,7 +211,6 @@ function createPost() {
         alert(error.message);
     });
 }
-
 
 function addPostToMainContent(post) {
     const postsDiv = document.getElementById('posts');

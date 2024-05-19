@@ -102,6 +102,14 @@ class CategoryPostsResource(Resource):
         return PostService.get_posts_by_category(category_id)
 
 
+@post_ns.route('/user/<int:user_id>')
+class UserPostsResource(Resource):
+    @post_ns.marshal_list_with(post_model)
+    def get(self, user_id):
+        """Get all posts of a user by its ID."""
+        return PostService.get_user_posts(user_id)
+
+
 @post_ns.route('/search')
 class PostsSearchResource(Resource):
     parser = reqparse.RequestParser()

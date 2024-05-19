@@ -66,7 +66,7 @@ button:hover {
 }
 
 .main-header .navbar {
-    display:flex;
+    display: flex;
     gap: 10px;
     width: 100%;
     align-items: center;
@@ -146,7 +146,7 @@ button:hover {
 .main-header #searchInput {
     flex-grow: 1;
     margin-right: 10px;
-    width:120px;
+    width: 120px;
 }
 
 .main-header #categorySelect {
@@ -319,6 +319,7 @@ button:hover {
     z-index: 10;
     display: none;
 }
+
 .profile-page #updateProfileForm label,
 .profile-page #updateProfileForm input,
 .profile-page #updateProfileForm button,
@@ -499,7 +500,6 @@ button:hover {
     padding-top: 60px;
 }
 
-
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto;
@@ -520,6 +520,25 @@ button:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+#userResults {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.user-results {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-decoration: none;
+    color: #000;
+}
+
+.user-results:hover {
+    background-color: #f0f0f0;
 }
 
 .post-container, .favorite-post {
@@ -567,3 +586,20 @@ button:hover {
     margin-right: 10px;
 }
 
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.post-item {
+    width: 100%;
+    padding: 20px;
+    margin-top: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-sizing: border-box;
+}
