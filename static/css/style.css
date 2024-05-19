@@ -58,18 +58,84 @@ button:hover {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 20px 0;
+    height: 7em;
+    justify-content: center;
     background-color: #ffffff;
     border-bottom: 1px solid #ccc;
+    position: fixed;
 }
 
-.main-header .search-category-container {
+.main-header .navbar {
     display:flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    width: 30%;
     gap: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.main-header .navbar .search-category-container,
+.main-header .navbar .create-button-container,
+.main-header .navbar .profile-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.main-header .navbar .search-category-container {
+    position: absolute;
+    left: 1em;
+    z-index: 500;
+}
+
+.main-header .navbar .profile-container {
+    position: absolute;
+    right: 1em;
+    z-index: 500;
+}
+
+.main-header .navbar .create-button-container {
+    position: absolute;
+    width: 100%;
+    justify-content: center;
+    z-index: 400;
+}
+
+.main-header .navbar .search-category-container {
+    position: relative;
+    justify-self: center;
+}
+
+
+.main-header .navbar .search-category-container input {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: 8vw !important;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .search-category-container select {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: 6vw !important;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .search-category-container button {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: fit-content !important;
+}
+
+.main-header .navbar .create-button-container button {
+    height: 3em;
+    margin: 0 !important;
+    width: fit-content;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .profile-container button {
+    height: 3em;
+    margin: 0 0.5em !important;
+    width: fit-content;
 }
 
 .main-header #logo {
@@ -96,7 +162,7 @@ button:hover {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 20px;
+    padding-top: 7em;
 }
 
 .main-header #posts {

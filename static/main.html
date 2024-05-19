@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Main Page</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="main-header">
-<header>
-    <div class="search-category-container">
-        <img id="logo" src="/static/images/B.png">
-        <input type="text" id="searchInput" placeholder="Search a post...">
-        <button id="searchButton">Search</button>
-        <select id="categorySelect">
-            <option value="">All Categories</option>
-        </select>
-        <button id="createPostButton">Create a New Post</button>
-        <button id="profileButton">Profile</button>
-        <button onclick="window.location.href='login.html'">Login</button>
+    <header>
+        <div class="navbar">
+            <div class="search-category-container">
+                <img id="logo" src="/static/images/B.png">
+                <input type="text" id="searchInput" placeholder="Search a post...">
+                <select id="categorySelect">
+                    <option value="">All Categories</option>
+                </select>
+                <button id="searchButton">Search</button>
+                
+            </div>
+            <div class="create-button-container">
+                <button id="createPostButton">Create a New Post</button>
+            </div>
+            <div class="profile-container">
+                <button id="profileButton">Profile</button>
+                <button onclick="window.location.href='login.html'">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent">
+        <h1>Last Blogs</h1>
+        <div id="posts"></div>
+    </main>
+
+    <div id="postFormModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create a New Post</h2>
+            <form id="postForm">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+                <br>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a category</option>
+                </select>
+                <br>
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" required></textarea>
+                <br>
+                <button type="submit">Publish</button>
+            </form>
+        </div>
     </div>
-</header>
 
-<main id="mainContent">
-    <h1>Last Blogs</h1>
-    <div id="posts"></div>
-</main>
-
-<div id="postFormModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Create a New Post</h2>
-        <form id="postForm">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
-            <br>
-            <label for="category">Category:</label>
-            <select id="category" name="category" required>
-                <option value="">Select a category</option>
-            </select>
-            <br>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content" required></textarea>
-            <br>
-            <button type="submit">Publish</button>
-        </form>
-    </div>
-</div>
-
-<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>
