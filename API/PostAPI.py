@@ -7,6 +7,7 @@ post_ns = Namespace('post', description='Post operations')
 post_model = post_ns.model('Post', {
     'id': fields.Integer(required=True, description='Post ID'),
     'user_id': fields.Integer(required=True, description='User ID'),
+    'username': fields.String(description='User Name'),
     'title': fields.String(required=True, description='Title'),
     'content': fields.String(required=True, description='Content'),
     'publish_date': fields.DateTime(description='Publish Date of the post', dt_format='rfc822'),

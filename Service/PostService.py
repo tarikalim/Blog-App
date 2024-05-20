@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from Model.model import db, Post, Category
+from Model.model import db, Post, Category, User
 from Exception.exception import *
 
 
@@ -15,10 +15,23 @@ class PostDTO:
         self.category_name = category_name
 
 
+class PostWithUserDTO:
+    def __init__(self, post, category_name, username):
+        self.id = post.id
+        self.user_id = post.user_id
+        self.username = username
+        self.title = post.title
+        self.content = post.content
+        self.publish_date = post.publish_date.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        self.category_id = post.category_id
+        self.category_name = category_name
+
+
 class PostService:
     @staticmethod
     def get_all_posts():
-        results = db.session.query(Post, Category.name).join(Category).order_by(Post.publish_date.desc()).limit(10).all()
+        results = db.session.query(Post, Category.name).join(Category).order_by(Post.publish_date.desc()).limit(
+            10).all()
         posts_data = []
         for post, category_name in results:
             post_data = PostDTO(post, category_name)
@@ -36,12 +49,14 @@ class PostService:
 
     @staticmethod
     def get_post_by_id(post_id):
-        result = db.session.query(Post, Category.name).join(Category).filter(Post.id == post_id).first()
+        result = db.session.query(Post, Category.name, User.username).join(Category).join(User,
+                                                                                          Post.user_id == User.id).filter(
+            Post.id == post_id).first()
         if not result:
             raise PostNotFoundException("Post not found")
 
-        post, category_name = result
-        return PostDTO(post, category_name)
+        post, category_name, username = result
+        return PostWithUserDTO(post, category_name, username)
 
     @staticmethod
     def get_posts_by_title(title):

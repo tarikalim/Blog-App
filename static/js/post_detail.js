@@ -104,6 +104,7 @@ function fetchPostDetails(postId) {
             document.getElementById('postContent').textContent = content;
             document.getElementById('publishDate').textContent = new Date(publish_date).toLocaleDateString();
             document.getElementById('categoryName').textContent = category_name;
+            document.getElementById('username').textContent = data.username;
             updateComments(postId);
             updateLikes(postId);
         })
