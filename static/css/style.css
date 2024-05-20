@@ -186,6 +186,10 @@ button:hover {
     height: 3em !important;
     margin: 0 0.5em !important;
     width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .main-header #logo {
