@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    background: linear-gradient(135deg, #F3904F, #3B4371);
 }
 
 .form-box {
@@ -21,6 +21,30 @@ body {
     text-align: center;
     width: 90%;
     max-width: 400px;
+}
+
+.form-box .form-head{
+    display: flex !important;
+    flex-direction: row !important;
+    margin-bottom: 20px;
+}
+
+.form-box h1{
+    margin-top: 15px;
+    margin-left: 45px;
+    justify-content: center !important;
+    font-size:3em;
+}
+
+.form-container #logo{
+    height: 6em !important;
+    width: 6em !important;
+}
+
+.form-container #logo-in{
+    margin-top: 2em;
+    height: 8em !important;
+    width: 8em !important;
 }
 
 input[type="text"],
@@ -74,13 +98,20 @@ button:hover {
 
 .main-header .navbar .search-category-container,
 .main-header .navbar .create-button-container,
-.main-header .navbar .profile-container {
+.main-header .navbar .profile-container,
+.main-header .navbar .search-category-container2 {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
 .main-header .navbar .search-category-container {
+    position: absolute;
+    left: 1em;
+    z-index: 500;
+}
+
+.main-header .navbar .search-category-container2 {
     position: absolute;
     left: 1em;
     z-index: 500;
@@ -106,7 +137,7 @@ button:hover {
 
 
 .main-header .navbar .search-category-container input {
-    height: 3em;
+    height: 3em !important;
     margin: 0 0.5em !important;
     width: 8vw !important;
     min-width: fit-content !important;
@@ -120,7 +151,7 @@ button:hover {
 }
 
 .main-header .navbar .search-category-container button {
-    height: 3em;
+    height: 3em !important;
     margin: 0 0.5em !important;
     width: fit-content !important;
 }
@@ -138,9 +169,28 @@ button:hover {
     width: fit-content;
 }
 
+.main-header .navbar .search-category-container2 {
+    position: relative;
+    justify-self: center;
+    margin-right: 3em !important;
+}
+
+.main-header .navbar .search-category-container2 input {
+    height: 3em !important;
+    margin: 0 0.5em !important;
+    width: 8vw !important;
+    min-width: fit-content !important;
+}
+
+.main-header .navbar .search-category-container2 button {
+    height: 3em !important;
+    margin: 0 0.5em !important;
+    width: fit-content;
+}
+
 .main-header #logo {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
 }
 
 .main-header #searchInput {
@@ -487,7 +537,7 @@ button:hover {
 
 
 .modal {
-    display: none;
+    display:none;
     position: fixed;
     z-index: 1;
     left: 0;
