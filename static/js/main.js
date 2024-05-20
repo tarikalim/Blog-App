@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (selectedCategory) {
             loadPostsByCategory(selectedCategory);
         } else {
-            loadPosts();
+            searchPosts();
         }
     });
 
@@ -158,7 +158,6 @@ function searchUsers(username) {
         });
 }
 
-
 function loadPostFormCategories() {
     fetch('/category')
         .then(response => response.json())
@@ -204,22 +203,10 @@ function createPost() {
     .then(data => {
         console.log('Post created:', data);
         postFormModal.style.display = 'none';
-        addPostToMainContent(data);
+        searchPosts();
     })
     .catch(error => {
         console.error('Error creating post:', error);
         alert(error.message);
     });
-}
-
-function addPostToMainContent(post) {
-    const postsDiv = document.getElementById('posts');
-    const postDiv = document.createElement('div');
-    postDiv.classList.add('post');
-    postDiv.innerHTML = `
-        <h2>${post.title}</h2>
-        <p>Category: ${post.category_name}</p>
-        <p>${post.content}</p>
-    `;
-    postsDiv.appendChild(postDiv);
 }
