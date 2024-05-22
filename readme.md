@@ -75,7 +75,7 @@ Create environment and activate it:
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate
+.\venv\Scripts\activate
 ```
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to run requirements file.
@@ -99,11 +99,10 @@ pip install -r requirements.txt
 
 ## Usage
 
-After you set the environment variables and install the requirements, you can run the project with the following
-command:
+After you set the environment variables and install the requirements, Write the following command in the project root
 
 ```bash
-python3 app.py
+flask run
 ```
 
 Application will run your local server. You can access the application with the following URLs:
