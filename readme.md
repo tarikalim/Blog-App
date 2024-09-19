@@ -22,7 +22,7 @@ Backend:
 
 Frontend:
 
--JavaScript
+- JavaScript
 
 ## About the Project
 
