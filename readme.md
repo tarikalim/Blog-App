@@ -1,14 +1,11 @@
+
 # BlogNest
 
-This project is a attempt to develop moduler full stack web application with Flask framework. The project is a blog
-application that allows users to create, read, update, and delete blog posts. Backend developed using RESful API
-principle and
-frontend developed using HTML, CSS, and JavaScript.
+**BlogNest** is a modular full-stack web application developed using the Flask framework. This project is a blog application that allows users to create, read, update, and delete blog posts. The backend is built following RESTful API principles, while the frontend uses HTML, CSS, and JavaScript.
 
 ## Technologies Used
 
-Backend:
-
+### Backend:
 - Python
 - Flask
 - SQLAlchemy
@@ -17,102 +14,97 @@ Backend:
 - Flask-RESTx
 - Flask-JWT-Extended
 
-Frontend:
-
+### Frontend:
 - JavaScript
+- HTML/CSS
 
 ## About the Project
 
-- Main objective of the project is to develop a modern backend API that securely handles user authentication and
-  authorization for
-  a blog application.
-- Flask factory pattern is used to create the application instance.
-- The project is developed with a modular structure that allows for easy scaling and maintenance.
-- ORM (Object Relational Mapping) is used to interact with the database.
-- DTO (Data Transfer Object) pattern is used to transfer data between the frontend and backend.
-- Services are used to handle business logic and separate it from the API layer.
-- API layer is used to handle requests and responses.
-- Specified exception handlers are used to handle exceptions and errors.
-- Custom decorators are used to handle user authentication and authorization.
+The main objective of **BlogNest** is to create a modern backend API that securely handles user authentication and authorization for a blog platform. Key features of the project include:
+
+- Flask factory pattern is used for application instance creation.
+- Modular structure for easy scalability and maintainability.
+- ORM (Object Relational Mapping) is used with SQLAlchemy for database interactions.
+- DTO (Data Transfer Object) pattern is used to transfer data between frontend and backend.
+- Business logic is separated using services, ensuring a clean architecture.
+- An API layer handles requests and responses efficiently.
+- Custom exception handlers manage errors and exceptions gracefully.
+- User authentication and authorization are managed using JWT tokens.
+- Custom decorators enhance user authentication and authorization handling.
 
 ## Features
 
 - User registration and login
-- User authentication and authorization with JWT
-- Create, read, update, and delete blog posts
-- Create, read, update, and delete comments on blog posts
-- Favorite blog posts and view favorite blog posts
-- Like blog posts and view total likes
-- See the latest liked blog posts
-- Search blog posts by title and category
-- Search users by username and view their posts
+- JWT-based user authentication and authorization
+- Blog post CRUD (Create, Read, Update, Delete) operations
+- Comment CRUD operations on blog posts
+- Favoriting blog posts and viewing favorites
+- Liking blog posts and tracking total likes
+- Viewing the latest liked blog posts
+- Searching blog posts by title and category
+- Searching users by username and viewing their posts
 - User profile management
-- User password reset and email verification with Flask-Mail
-- 30 different endpoints for the API
-- Simple UI for the blog application
+- Password reset and email verification via Flask-Mail
+- 20+ endpoints for various API operations
+- Simple frontend UI for the blog
 - Swagger UI for API documentation
 
-## Step by Step Installation
+## Docker Setup for Development
 
-This project developed with:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/tarikalim/BlogNest.git
+   ```
+
+2. Create a `.env` file in the root directory based on the example provided in `.env.example`.
+
+3. Build the Docker image:
+   ```bash
+   docker build -t blognest .
+   ```
+
+4. Run the Docker container:
+   ```bash
+   docker run -d --env-file .env -p 5000:5000 blognest
+   ```
+
+## Step-by-Step Installation (without Docker)
+
+This project was developed using:
 
 ```
-Pyton 3.12.0
+Python 3.12.0
 ```
 
-Clone repository with following command in your terminal:
+1. Clone the repository:
+   ```bash
+   git clone $repository_link
+   ```
 
-```bash
-git clone $repository_link
-```
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   .\venv\Scripts\activate
+   ```
 
-Create environment and activate it:
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python3 -m venv venv
-.\venv\Scripts\activate
-```
+4. Set up environment variables by creating a `.env` file in the root directory based on `.env.example`.
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to run requirements file.
-
-```bash
-pip install -r requirements.txt
-```
-
-* Create a .env file in the root directory of the project and add the environment variables given in the .env.example
-  file.
-
-
-* To instructor run and test the project, necessary environment variables are provided in the submission. Please use
-  them.
-
-
-* Ensure that your code editor or IDE is set to use the Python interpreter from the virtual environment. This setting is
-  usually found in the preferences or settings menu under "Python Interpreter" or similar. Choose the interpreter
-  located
-  inside your virtual environment directory.
+5. Start the application:
+   ```bash
+   flask run
+   ```
 
 ## Usage
 
-After you set the environment variables and install the requirements, Write the following command in the project root
-
-```bash
-flask run
-```
-
-Application will run your local server. You can access the application with the following URLs:
-
-* Swagger UI is available at: http://localhost:5000
-
-
-* Blog application is available at: http://localhost:5000/static/index.html
+- Swagger UI is available at: `http://localhost:5000`
+- Blog application is available at: `http://localhost:5000/static/index.html`
 
 ## Additional Notes
 
-* To make testing process easier, example database is provided in the repository. You can use it to test the project.
-
-
-* Provided server is not suitable for production. It is only for testing purposes provided by Flask.
-
-
-
+- Example database is provided in the repository for easier testing.
+- Flask’s built-in server is used for development purposes only and is not suitable for production.

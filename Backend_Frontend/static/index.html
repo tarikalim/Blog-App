@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BlogNest</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="/Backend_Frontend/static/logo.png">
+</head>
+<body>
+<div class="form-container">
+    <div class="form-box">
+        <div class="form-head">
+            <img id="logo-in" src="/Backend_Frontend/static/logo.png" onclick="window.location.href='main.html'">
+            <h1>Welcome to BlogNest!</h1>
+        </div>
+        <div class="button-container">
+            <button onclick="location.href='login.html'">Login</button>
+            <button onclick="location.href='register.html'">Register</button>
+            <button id="forgot-password-btn" onclick="toggleForgotPasswordForm()">Forgot Password</button>
+            <button onclick="window.location.href='main.html'">Go Main Page</button>
+
+        </div>
+
+        <div id="forgot-password-form" style="display:none;">
+            <input type="email" id="reset-email" placeholder="Enter your email">
+            <button onclick="sendResetLink()">Send Reset Link</button>
+
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>
