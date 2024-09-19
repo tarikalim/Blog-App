@@ -17,8 +17,6 @@ Backend:
 - Flask-Migrate
 - Flask-RESTx
 - Flask-JWT-Extended
-- Swagger UI
-- Postman
 
 Frontend:
 
