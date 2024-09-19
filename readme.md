@@ -1,4 +1,4 @@
-# Blog App (BlogNest)
+# BlogNest
 
 This project is a attempt to develop moduler full stack web application with Flask framework. The project is a blog
 application that allows users to create, read, update, and delete blog posts. Backend developed using RESful API
@@ -22,9 +22,7 @@ Backend:
 
 Frontend:
 
-- HTML
-- CSS
-- JavaScript
+-JavaScript
 
 ## About the Project
 
