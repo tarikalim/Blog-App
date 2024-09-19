@@ -14,7 +14,6 @@ Backend:
 - SQLAlchemy
 - SQLite
 - Flask-Mail
-- Flask-Migrate
 - Flask-RESTx
 - Flask-JWT-Extended
 
